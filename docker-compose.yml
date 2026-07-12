@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: matdansathi_db
+    environment:
+      POSTGRES_DB: MatdanSathiDb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: API/Dockerfile
+    container_name: matdansathi_backend
+    ports:
+      - "5103:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=db;Database=MatdanSathiDb;Username=postgres;Password=postgres
+    depends_on:
+      - db
+
+  parser:
+    build:
+      context: ./parser-service
+    container_name: matdansathi_parser
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - INTERNAL_API_KEY=mY-s3cr3t-s4lt-f0r-bl1nd-1ndex-HMAC-256
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: matdansathi_frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:

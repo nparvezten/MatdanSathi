@@ -1,0 +1,422 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Tests/MatdanSathi.API.Tests.csproj": {}
+  },
+  "projects": {
+    "/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/API/MatdanSathi.API.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/API/MatdanSathi.API.csproj",
+        "projectName": "MatdanSathi.API",
+        "projectPath": "/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/API/MatdanSathi.API.csproj",
+        "packagesPath": "/Users/parvezkhan/.nuget/packages/",
+        "outputPath": "/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/API/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/parvezkhan/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "/usr/local/share/dotnet/library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {
+              "/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Application/MatdanSathi.API.Application.csproj": {
+                "projectPath": "/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Application/MatdanSathi.API.Application.csproj"
+              },
+              "/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Infrastructure/MatdanSathi.API.Infrastructure.csproj": {
+                "projectPath": "/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Infrastructure/MatdanSathi.API.Infrastructure.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "Asp.Versioning.Http": {
+              "target": "Package",
+              "version": "[8.1.0, )"
+            },
+            "Asp.Versioning.Mvc.ApiExplorer": {
+              "target": "Package",
+              "version": "[8.1.0, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "Microsoft.AspNetCore.OpenApi": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "Serilog.AspNetCore": {
+              "target": "Package",
+              "version": "[10.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.101/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Application/MatdanSathi.API.Application.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Application/MatdanSathi.API.Application.csproj",
+        "projectName": "MatdanSathi.API.Application",
+        "projectPath": "/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Application/MatdanSathi.API.Application.csproj",
+        "packagesPath": "/Users/parvezkhan/.nuget/packages/",
+        "outputPath": "/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Application/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/parvezkhan/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "/usr/local/share/dotnet/library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {
+              "/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Domain/MatdanSathi.API.Domain.csproj": {
+                "projectPath": "/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Domain/MatdanSathi.API.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "FluentValidation.DependencyInjectionExtensions": {
+              "target": "Package",
+              "version": "[12.1.1, )"
+            },
+            "MediatR": {
+              "target": "Package",
+              "version": "[14.2.0, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.1, )"
+            },
+            "Microsoft.Extensions.DependencyInjection.Abstractions": {
+              "target": "Package",
+              "version": "[10.0.9, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.101/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Domain/MatdanSathi.API.Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Domain/MatdanSathi.API.Domain.csproj",
+        "projectName": "MatdanSathi.API.Domain",
+        "projectPath": "/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Domain/MatdanSathi.API.Domain.csproj",
+        "packagesPath": "/Users/parvezkhan/.nuget/packages/",
+        "outputPath": "/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Domain/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/parvezkhan/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "/usr/local/share/dotnet/library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.101/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Infrastructure/MatdanSathi.API.Infrastructure.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Infrastructure/MatdanSathi.API.Infrastructure.csproj",
+        "projectName": "MatdanSathi.API.Infrastructure",
+        "projectPath": "/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Infrastructure/MatdanSathi.API.Infrastructure.csproj",
+        "packagesPath": "/Users/parvezkhan/.nuget/packages/",
+        "outputPath": "/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Infrastructure/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/parvezkhan/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "/usr/local/share/dotnet/library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {
+              "/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Application/MatdanSathi.API.Application.csproj": {
+                "projectPath": "/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Application/MatdanSathi.API.Application.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.1, )"
+            },
+            "Microsoft.Extensions.Options": {
+              "target": "Package",
+              "version": "[10.0.9, )"
+            },
+            "Microsoft.Extensions.Options.ConfigurationExtensions": {
+              "target": "Package",
+              "version": "[10.0.9, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[9.0.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.101/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Tests/MatdanSathi.API.Tests.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Tests/MatdanSathi.API.Tests.csproj",
+        "projectName": "MatdanSathi.API.Tests",
+        "projectPath": "/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Tests/MatdanSathi.API.Tests.csproj",
+        "packagesPath": "/Users/parvezkhan/.nuget/packages/",
+        "outputPath": "/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Tests/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/parvezkhan/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "/usr/local/share/dotnet/library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {
+              "/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/API/MatdanSathi.API.csproj": {
+                "projectPath": "/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/API/MatdanSathi.API.csproj"
+              },
+              "/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Application/MatdanSathi.API.Application.csproj": {
+                "projectPath": "/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Application/MatdanSathi.API.Application.csproj"
+              },
+              "/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Infrastructure/MatdanSathi.API.Infrastructure.csproj": {
+                "projectPath": "/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Infrastructure/MatdanSathi.API.Infrastructure.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore.InMemory": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[17.11.1, )"
+            },
+            "coverlet.collector": {
+              "target": "Package",
+              "version": "[6.0.2, )"
+            },
+            "xunit": {
+              "target": "Package",
+              "version": "[2.9.2, )"
+            },
+            "xunit.runner.visualstudio": {
+              "target": "Package",
+              "version": "[2.8.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.101/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

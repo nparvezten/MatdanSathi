@@ -1,0 +1,314 @@
+<!-- Main Dashboard Layout -->
+<div class="min-h-screen flex flex-col bg-[#0b0f19] text-slate-100 pb-12 relative overflow-hidden">
+  <!-- Decorative background glows -->
+  <div class="absolute w-96 h-96 rounded-full bg-teal-500/5 blur-[120px] -top-12 -left-12 pointer-events-none"></div>
+  <div class="absolute w-96 h-96 rounded-full bg-emerald-500/5 blur-[120px] -bottom-12 -right-12 pointer-events-none"></div>
+
+  <!-- Navigation Header Navbar -->
+  <header class="border-b border-slate-800/80 bg-slate-950/80 backdrop-blur sticky top-0 z-50 px-6 py-4">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center space-x-3">
+        <!-- Dashboard Logo Icon -->
+        <div class="bg-gradient-to-tr from-teal-500 to-emerald-600 p-2.5 rounded-xl text-slate-950 font-black tracking-wider text-sm shadow-lg shadow-teal-500/10">
+          MS
+        </div>
+        <div>
+          <h1 class="text-md font-bold tracking-wide text-white">MatdanSathi</h1>
+          <p class="text-[10px] text-teal-400 font-semibold tracking-wider uppercase mt-0.5">Electoral Roll Companion</p>
+        </div>
+      </div>
+
+      <!-- Mode Selector Tabs -->
+      <div class="flex bg-slate-900 border border-slate-800 p-1 rounded-xl">
+        <button 
+          (click)="setTab('public')"
+          [class.bg-teal-600]="activeTab() === 'public'"
+          [class.text-white]="activeTab() === 'public'"
+          class="px-4 py-2 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white flex items-center space-x-1.5">
+          <span>🌐 Public Utilities</span>
+        </button>
+        <button 
+          (click)="setTab('volunteer')"
+          [class.bg-teal-600]="activeTab() === 'volunteer'"
+          [class.text-white]="activeTab() === 'volunteer'"
+          class="px-4 py-2 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white flex items-center space-x-1.5">
+          <span>🔒 Volunteer Portal</span>
+        </button>
+      </div>
+
+      <!-- User Auth State -->
+      <div class="flex items-center space-x-4 text-xs">
+        <div *ngIf="isAuthenticated() && activeTab() === 'volunteer'" class="flex items-center space-x-2">
+          <span class="text-slate-400">Volunteer:</span>
+          <span class="text-emerald-400 bg-emerald-950/40 border border-emerald-900 px-2 py-0.5 rounded font-mono text-[10px]">{{ verifierEmail() }}</span>
+          <button (click)="logout()" class="bg-slate-800 hover:bg-slate-700 text-white text-[10px] font-semibold px-2 py-1 rounded">Logout</button>
+        </div>
+        <span *ngIf="!isAuthenticated() || activeTab() !== 'volunteer'" class="px-2.5 py-1 bg-teal-950/40 text-teal-400 border border-teal-900 rounded-md font-semibold font-mono tracking-wider text-[9px] uppercase">PWA Active</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- TAB 1: PUBLIC VOTER UTILITIES (No Login Required) -->
+  <div *ngIf="activeTab() === 'public'" class="max-w-6xl w-full mx-auto px-4 mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start animate-fadeIn">
+    <!-- LEFT PANEL: Public Interactive Tools (7 cols) -->
+    <div class="lg:col-span-7 space-y-6">
+      
+      <!-- Tool 1: Legacy EPIC Decoder -->
+      <div class="bg-slate-900/60 backdrop-blur border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+        <div>
+          <h3 class="text-sm font-bold text-teal-400 uppercase tracking-wide">🔍 Legacy EPIC Card Decoder</h3>
+          <p class="text-xs text-slate-400 mt-1">Old Voter IDs do not use the modern alphanumeric format. Type legacy IDs to identify their district boundaries.</p>
+        </div>
+        <div class="flex space-x-2">
+          <input 
+            type="text" 
+            [(ngModel)]="legacyEpicInput" 
+            placeholder="e.g. MT/05/025/180293" 
+            class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-2 text-white text-xs placeholder:text-slate-650 uppercase" />
+          <button 
+            (click)="decodeLegacyEpic()" 
+            class="bg-teal-600 hover:bg-teal-500 text-white font-semibold text-xs px-4 py-2 rounded-xl transition-all">
+            Decode ID
+          </button>
+        </div>
+        <!-- Decode Result Card -->
+        <div *ngIf="decodedResult()" class="bg-slate-950/80 border border-slate-800/80 p-4 rounded-xl text-xs space-y-2 animate-scaleIn">
+          <div *ngIf="decodedResult().isValid" class="space-y-1.5">
+            <div><span class="text-slate-500">State:</span> <span class="text-white font-semibold">{{ decodedResult().state }}</span></div>
+            <div><span class="text-slate-500">Parliament:</span> <span class="text-white">{{ decodedResult().lokSabha }}</span></div>
+            <div><span class="text-slate-500">Assembly segment:</span> <span class="text-white">{{ decodedResult().assemblyPart }}</span></div>
+            <div><span class="text-slate-500">Serial Index:</span> <span class="font-mono text-teal-400">{{ decodedResult().serialNo }}</span></div>
+            <div class="pt-2 text-[10px] text-teal-400 italic border-t border-slate-900 mt-2">💡 {{ decodedResult().suggestion }}</div>
+          </div>
+          <div *ngIf="!decodedResult().isValid" class="text-rose-400">
+            ⚠️ {{ decodedResult().message }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Tool 2: Delimitation Time Machine -->
+      <div class="bg-slate-900/60 backdrop-blur border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+        <div>
+          <h3 class="text-sm font-bold text-teal-400 uppercase tracking-wide">⏳ Delimitation Time Machine</h3>
+          <p class="text-xs text-slate-400 mt-1">Constituency boundaries were reshaped in 2008. Cross-reference modern names against pre-2008 electoral registers.</p>
+        </div>
+        <div>
+          <label class="block text-[10px] text-slate-400 uppercase font-semibold mb-1">Select Modern Constituency</label>
+          <select 
+            [(ngModel)]="selectedConstituency" 
+            (change)="onConstituencyChange()" 
+            class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-teal-500">
+            <option value="">-- Choose Constituency --</option>
+            <option value="sion">Sion Koliwada (Mumbai)</option>
+            <option value="bandra">Vandre West / Bandra (Mumbai)</option>
+            <option value="pune">Shivajinagar (Pune)</option>
+            <option value="byculla">Chinchpokli / Byculla (Mumbai)</option>
+          </select>
+        </div>
+        <!-- Time Machine Result -->
+        <div *ngIf="timeMachineResult()" class="bg-slate-950/80 border border-slate-800/80 p-4 rounded-xl text-xs space-y-2 animate-scaleIn">
+          <div><span class="text-slate-500">Modern Area:</span> <span class="text-white font-bold">{{ timeMachineResult().modern }}</span></div>
+          <div><span class="text-slate-500">Pre-2008 Name:</span> <span class="text-teal-400 font-semibold">{{ timeMachineResult().historical }}</span></div>
+          <div><span class="text-slate-500">Ward Jurisdiction:</span> <span class="text-white">{{ timeMachineResult().ward }}</span></div>
+        </div>
+      </div>
+
+      <!-- Tool 3: English-to-Marathi Transliterator -->
+      <div class="bg-slate-900/60 backdrop-blur border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+        <div>
+          <h3 class="text-sm font-bold text-teal-400 uppercase tracking-wide">✍️ English-to-Marathi Name Helper</h3>
+          <p class="text-xs text-slate-400 mt-1">Electoral rolls are indexed locally in Marathi. Type in English to generate correct phonetic Marathi scripts copy-ready.</p>
+        </div>
+        <div class="flex space-x-2">
+          <input 
+            type="text" 
+            [(ngModel)]="englishNameInput" 
+            placeholder="e.g. Saidnabi Khan" 
+            class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-2 text-white text-xs placeholder:text-slate-650" />
+          <button 
+            (click)="transliterate()" 
+            class="bg-teal-600 hover:bg-teal-500 text-white font-semibold text-xs px-4 py-2 rounded-xl transition-all">
+            Translate
+          </button>
+        </div>
+        <div *ngIf="transliteratedName()" class="bg-slate-950/80 border border-slate-800/80 p-4 rounded-xl text-xs flex justify-between items-center animate-scaleIn">
+          <div>
+            <span class="text-slate-500 block text-[10px] uppercase font-bold">Marathi Script spelling</span>
+            <span class="text-sm font-bold text-white tracking-wide mt-1 block">{{ transliteratedName() }}</span>
+          </div>
+          <span class="bg-teal-950 text-teal-400 border border-teal-900 px-2 py-1 rounded text-[10px] select-all cursor-pointer font-bold">Double Click to Copy</span>
+        </div>
+      </div>
+
+      <!-- Tool 4: Volunteer SignUp Request -->
+      <div class="bg-slate-900/60 backdrop-blur border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+        <div>
+          <h3 class="text-sm font-bold text-teal-400 uppercase tracking-wide">🤝 Join Voter Drive Drive (Volunteer Sign Up)</h3>
+          <p class="text-xs text-slate-400 mt-1">Apply to register as an authenticated verification volunteer in your local constituency.</p>
+        </div>
+        <div *ngIf="!registrationSuccess()" class="grid grid-cols-2 gap-3">
+          <input type="text" [(ngModel)]="regName" placeholder="Full Name" class="bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white" />
+          <input type="email" [(ngModel)]="regEmail" placeholder="Email Address" class="bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white" />
+          <input type="text" [(ngModel)]="regPhone" placeholder="Mobile Number" class="bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white" />
+          <input type="text" [(ngModel)]="regAssembly" placeholder="Assembly constituency" class="bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white" />
+          <button 
+            (click)="registerVolunteer()" 
+            [disabled]="!regName || !regEmail || !regPhone"
+            class="col-span-2 bg-teal-600 hover:bg-teal-500 disabled:opacity-40 text-white font-semibold text-xs py-2.5 rounded-xl transition-all">
+            Submit Registration
+          </button>
+        </div>
+        <div *ngIf="registrationSuccess()" class="bg-emerald-950/30 border border-emerald-900 text-emerald-400 p-4 rounded-xl text-center space-y-2 animate-scaleIn">
+          <h4 class="font-bold text-xs">Application Registered Successfully!</h4>
+          <p class="text-[10px] text-slate-450 leading-relaxed max-w-sm mx-auto">Your details were routed to the Collectorate. Once approved, your login password will be emailed.</p>
+          <button (click)="resetRegistration()" class="mt-2 text-teal-400 font-semibold underline text-[10px] block mx-auto">Apply for Another Area</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL: ECI Voter Guides & Resources (5 cols) -->
+    <div class="lg:col-span-5 space-y-6">
+      
+      <!-- Alert Banner -->
+      <div class="bg-amber-950/20 border border-amber-900 rounded-2xl p-5 space-y-2">
+        <div class="flex items-center space-x-1.5 text-amber-400 font-bold text-xs">
+          <span>📢 SIR 2026 CUTOFF EXTENDED</span>
+        </div>
+        <p class="text-slate-300 text-xs leading-relaxed">
+          The Election Commission of India has extended the **Special Intensive Revision (SIR) 2026** deadline to **August 8, 2026**. Ensure all additions, corrections, and deletions are filed online before the cutoff date!
+        </p>
+      </div>
+
+      <!-- Form Guidelines Tooltips -->
+      <div class="bg-slate-900/40 border border-slate-800 rounded-2xl p-5 space-y-3">
+        <h4 class="text-xs font-bold text-teal-400 uppercase tracking-wider">📋 ECI Application Form Guide</h4>
+        <div class="space-y-3 text-[11px] leading-relaxed text-slate-300">
+          <div>
+            <strong class="text-white block font-semibold">Form 6: New Voter</strong>
+            <span>Use this to register as a new elector/voter in the constituency.</span>
+          </div>
+          <div class="border-t border-slate-850 pt-2">
+            <strong class="text-white block font-semibold">Form 7: Objections & Deletions</strong>
+            <span>Use this to submit objections or delete shifted/deceased family members from the roll.</span>
+          </div>
+          <div class="border-t border-slate-850 pt-2">
+            <strong class="text-white block font-semibold">Form 8: Correction / Shifting</strong>
+            <span>Use this for corrections of name, age, address, EPIC duplicates, or PwD tags.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Compliance Warning -->
+      <div class="bg-rose-950/20 border border-rose-950/60 rounded-2xl p-5 text-xs text-rose-300 space-y-1">
+        <strong class="text-[11px] uppercase block font-bold text-rose-400">⚠️ Dual Registration Warning</strong>
+        <p class="leading-relaxed text-[11px]">
+          Possessing voter registration in more than one constituency is a punishable offense under Indian Election Laws. File a <strong>Form 7 deletion request</strong> for old addresses before registering in new areas.
+        </p>
+      </div>
+
+      <!-- Official Links Module -->
+      <div class="bg-slate-900/40 border border-slate-800 rounded-2xl p-5 space-y-3">
+        <h4 class="text-xs font-bold text-teal-400 uppercase tracking-wider">🔗 ECI Official Web Portals</h4>
+        <div class="flex flex-col space-y-2 text-[11px] font-semibold text-teal-400">
+          <a href="https://voters.eci.gov.in/" target="_blank" class="hover:underline">Voter Services Portal (VSP) ➔</a>
+          <a href="https://ceo.maharashtra.gov.in/" target="_blank" class="hover:underline">CEO Maharashtra Portal ➔</a>
+          <a href="https://electoralsearch.eci.gov.in/" target="_blank" class="hover:underline">National Electoral Search ➔</a>
+          <a href="https://eci-citizenservices.eci.nic.in/" target="_blank" class="hover:underline">ECI Grievance Portal ➔</a>
+          <a href="https://ecisveep.nic.in/" target="_blank" class="hover:underline">SVEEP Voter Education Guides ➔</a>
+        </div>
+      </div>
+
+      <!-- Official Media Support -->
+      <div class="bg-slate-900/60 border border-slate-800 p-5 rounded-2xl space-y-2">
+        <span class="text-[10px] text-slate-500 uppercase tracking-wider block font-bold">National Support Helpline</span>
+        <div class="text-xl font-mono text-white font-extrabold flex items-center space-x-2">
+          <span>📞 Dial 1950</span>
+        </div>
+        <p class="text-[10px] text-slate-450 leading-relaxed">
+          Toll-free National Voter Helpline for ECI registration support. Remember to add your local STD code before dialing.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 2: VOLUNTEER PORTAL (Login & Private Modules) -->
+  <div *ngIf="activeTab() === 'volunteer'" class="flex-1 max-w-6xl w-full mx-auto px-4 mt-8 flex flex-col items-center">
+    
+    <!-- Case A: NOT Logged In (Show Login Form) -->
+    <div *ngIf="!isAuthenticated()" class="w-full max-w-md bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-3xl p-8 shadow-2xl relative z-10 animate-scaleIn mt-10">
+      <div class="text-center mb-8">
+        <div class="inline-flex bg-gradient-to-tr from-teal-500 to-emerald-600 p-3.5 rounded-2xl text-slate-950 font-black tracking-wider text-lg shadow-lg shadow-teal-500/20 mb-4">
+          MS
+        </div>
+        <h2 class="text-2xl font-bold text-white tracking-wide">Volunteer Sign In</h2>
+        <p class="text-xs text-slate-450 mt-2">Enter credentials to unlock local verification registers.</p>
+      </div>
+
+      <!-- Login Form -->
+      <div class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">Verifier Email</label>
+          <input 
+            type="email" 
+            [(ngModel)]="email" 
+            placeholder="verifier@matdansathi.org"
+            class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-teal-500 transition-colors" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">Password</label>
+          <input 
+            type="password" 
+            [(ngModel)]="password" 
+            placeholder="••••••••"
+            class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-teal-500 transition-colors" />
+        </div>
+
+        <!-- Error State -->
+        <div *ngIf="errorMessage()" class="bg-rose-950/30 border border-rose-900 text-rose-400 px-4 py-3 rounded-xl text-xs">
+          ⚠️ {{ errorMessage() }}
+        </div>
+
+        <button 
+          (click)="login()"
+          [disabled]="isLoading()"
+          class="w-full bg-teal-600 hover:bg-teal-500 disabled:bg-slate-800 disabled:text-slate-500 text-white font-semibold py-3.5 rounded-xl text-sm transition-all shadow-lg shadow-teal-600/10 flex items-center justify-center space-x-2">
+          <span *ngIf="isLoading()" class="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></span>
+          <span>Open Volunteer Dashboard</span>
+        </button>
+
+        <!-- Sandbox Hint Card -->
+        <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-2xl text-xs space-y-2 mt-6">
+          <span class="text-teal-400 font-bold block uppercase tracking-wider text-[10px]">🔑 Seeded Sandbox Logins</span>
+          <div class="text-slate-400 leading-relaxed">
+            To test the verification matching engine, use:
+            <div class="font-mono text-[11px] mt-1 text-slate-300">Email: <span class="text-white">verifier&#64;matdansathi.org</span></div>
+            <div class="font-mono text-[11px] text-slate-300">Password: <span class="text-white">SecurePassword123!</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Case B: Logged In (Show Form Wizards and Proximity Map) -->
+    <div *ngIf="isAuthenticated()" class="w-full grid grid-cols-1 lg:grid-cols-2 gap-8 items-start animate-fadeIn">
+      <!-- Project C: Form 8 / Form 7 Wizards & Archives -->
+      <section class="space-y-2">
+        <div class="flex items-center justify-between px-2">
+          <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Verification Wizard Modules</span>
+          <span class="h-2 w-2 rounded-full bg-teal-500 animate-ping"></span>
+        </div>
+        <app-form-wizard></app-form-wizard>
+      </section>
+
+      <!-- Project B: BLO Proximity Map Locator -->
+      <section class="space-y-2">
+        <div class="flex items-center justify-between px-2">
+          <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">BLO Proximity Boundary Map</span>
+          <span class="h-2 w-2 rounded-full bg-teal-500"></span>
+        </div>
+        <app-blo-map></app-blo-map>
+      </section>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,12 @@
+/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Domain/bin/Debug/net9.0/MatdanSathi.API.Domain.deps.json
+/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Domain/bin/Debug/net9.0/MatdanSathi.API.Domain.dll
+/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Domain/bin/Debug/net9.0/MatdanSathi.API.Domain.pdb
+/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Domain/obj/Debug/net9.0/MatdanSathi.API.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Domain/obj/Debug/net9.0/MatdanSathi.API.Domain.AssemblyInfoInputs.cache
+/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Domain/obj/Debug/net9.0/MatdanSathi.API.Domain.AssemblyInfo.cs
+/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Domain/obj/Debug/net9.0/MatdanSathi.API.Domain.csproj.CoreCompileInputs.cache
+/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Domain/obj/Debug/net9.0/MatdanSathi.API.Domain.dll
+/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Domain/obj/Debug/net9.0/refint/MatdanSathi.API.Domain.dll
+/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Domain/obj/Debug/net9.0/MatdanSathi.API.Domain.pdb
+/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Domain/obj/Debug/net9.0/ref/MatdanSathi.API.Domain.dll
+/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Domain/obj/Debug/net9.0/MatdanSathi.API.Domain.sourcelink.json

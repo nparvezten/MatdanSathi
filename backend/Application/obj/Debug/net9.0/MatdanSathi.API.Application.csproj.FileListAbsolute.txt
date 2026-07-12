@@ -1,0 +1,16 @@
+/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Application/bin/Debug/net9.0/MatdanSathi.API.Application.deps.json
+/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Application/bin/Debug/net9.0/MatdanSathi.API.Application.dll
+/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Application/bin/Debug/net9.0/MatdanSathi.API.Application.pdb
+/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Application/bin/Debug/net9.0/MatdanSathi.API.Domain.dll
+/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Application/bin/Debug/net9.0/MatdanSathi.API.Domain.pdb
+/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Application/obj/Debug/net9.0/MatdanSathi.API.Application.csproj.AssemblyReference.cache
+/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Application/obj/Debug/net9.0/MatdanSathi.API.Application.GeneratedMSBuildEditorConfig.editorconfig
+/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Application/obj/Debug/net9.0/MatdanSathi.API.Application.AssemblyInfoInputs.cache
+/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Application/obj/Debug/net9.0/MatdanSathi.API.Application.AssemblyInfo.cs
+/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Application/obj/Debug/net9.0/MatdanSathi.API.Application.csproj.CoreCompileInputs.cache
+/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Application/obj/Debug/net9.0/MatdanSa.97DE7120.Up2Date
+/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Application/obj/Debug/net9.0/MatdanSathi.API.Application.dll
+/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Application/obj/Debug/net9.0/refint/MatdanSathi.API.Application.dll
+/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Application/obj/Debug/net9.0/MatdanSathi.API.Application.pdb
+/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Application/obj/Debug/net9.0/ref/MatdanSathi.API.Application.dll
+/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Application/obj/Debug/net9.0/MatdanSathi.API.Application.sourcelink.json
