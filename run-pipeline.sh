@@ -3,7 +3,7 @@
 # Exit immediately if any command fails
 set -e
 
-# ANSI Color Codes for premium terminal formatting
+# ANSI Color Codes for terminal formatting
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 CYAN='\033[0;36m'
@@ -27,14 +27,23 @@ dotnet test backend/MatdanSathi.sln --no-build
 # 2. Verification of Python Fast API Parser Service
 echo -e "\n${YELLOW}[2/4] Running Python FastAPI Parser pytest Suite...${NC}"
 if [ -f "parser-service/.venv/bin/pytest" ]; then
-    parser-service/.venv/bin/pytest parser-service/
+    PYTEST_CMD="parser-service/.venv/bin/pytest"
+    BANDIT_CMD="parser-service/.venv/bin/bandit"
+elif command -v pytest &> /dev/null; then
+    PYTEST_CMD="pytest"
+    BANDIT_CMD="bandit"
 else
-    echo -e "${RED}Error: Python virtual environment or pytest not found in parser-service/.venv${NC}"
-    exit 1
+    echo -e "${YELLOW}Setting up Python virtual environment in parser-service/.venv...${NC}"
+    python3 -m venv parser-service/.venv
+    parser-service/.venv/bin/pip install -q -r parser-service/requirements.txt
+    PYTEST_CMD="parser-service/.venv/bin/pytest"
+    BANDIT_CMD="parser-service/.venv/bin/bandit"
 fi
 
+$PYTEST_CMD parser-service/
+
 echo -e "${YELLOW}[2/4] Running Python SAST Bandit Security Scan...${NC}"
-parser-service/.venv/bin/bandit -r parser-service/ -x parser-service/.venv/,parser-service/test_parser.py,parser-service/test_security.py
+$BANDIT_CMD -r parser-service/ -x parser-service/.venv/,parser-service/test_parser.py,parser-service/test_security.py
 
 # 3. Compilation of Frontend Angular Dashboard
 echo -e "\n${YELLOW}[3/4] Building Frontend Angular Standalone App...${NC}"

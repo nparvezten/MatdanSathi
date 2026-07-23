@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MatdanSathi.API.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+de769062f845965d7dab6b12f869d448365a1190")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7fc60fd6966414e373eb6a3702d9ca2d9f84104d")]
 [assembly: System.Reflection.AssemblyProductAttribute("MatdanSathi.API.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MatdanSathi.API.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
