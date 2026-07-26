@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Asp.Versioning;
-using MediatR;
+using MatdanSathi.API.Application.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MatdanSathi.API.Application.Voters.Queries.CheckVoterRegistration;

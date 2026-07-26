@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MatdanSathi.API.Application.Common.Interfaces;
 using MatdanSathi.API.Infrastructure.Persistence;
 using MatdanSathi.API.Infrastructure.Security;
+using MatdanSathi.API.Infrastructure.Common;
 
 namespace MatdanSathi.API.Infrastructure;
 
@@ -28,6 +29,9 @@ public static class DependencyInjection
         // 3. Bind the application db context interface to implementation
         services.AddScoped<IApplicationDbContext>(provider =>
             provider.GetRequiredService<ApplicationDbContext>());
+
+        // 4. Register Native MIT Mediator
+        services.AddScoped<IMediator, NativeMediator>();
 
         return services;
     }

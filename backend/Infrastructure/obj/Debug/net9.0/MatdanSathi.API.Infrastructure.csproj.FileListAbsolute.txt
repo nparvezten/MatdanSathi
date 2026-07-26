@@ -10,9 +10,9 @@
 /Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Infrastructure/obj/Debug/net9.0/MatdanSathi.API.Infrastructure.AssemblyInfoInputs.cache
 /Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Infrastructure/obj/Debug/net9.0/MatdanSathi.API.Infrastructure.AssemblyInfo.cs
 /Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Infrastructure/obj/Debug/net9.0/MatdanSathi.API.Infrastructure.csproj.CoreCompileInputs.cache
+/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Infrastructure/obj/Debug/net9.0/MatdanSathi.API.Infrastructure.sourcelink.json
 /Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Infrastructure/obj/Debug/net9.0/MatdanSa.3A5CB974.Up2Date
 /Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Infrastructure/obj/Debug/net9.0/MatdanSathi.API.Infrastructure.dll
 /Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Infrastructure/obj/Debug/net9.0/refint/MatdanSathi.API.Infrastructure.dll
 /Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Infrastructure/obj/Debug/net9.0/MatdanSathi.API.Infrastructure.pdb
 /Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Infrastructure/obj/Debug/net9.0/ref/MatdanSathi.API.Infrastructure.dll
-/Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Infrastructure/obj/Debug/net9.0/MatdanSathi.API.Infrastructure.sourcelink.json

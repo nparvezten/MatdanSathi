@@ -10,8 +10,6 @@ using MatdanSathi.API.Application.Common.Interfaces;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.RateLimiting;
-
-using MediatR;
 using MatdanSathi.API.Application.Visits.Commands.ScheduleBloVisit;
 
 namespace MatdanSathi.API.Controllers.v1;

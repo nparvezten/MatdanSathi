@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MediatR;
+using MatdanSathi.API.Application.Common.Interfaces;
 
 namespace MatdanSathi.API.Application.Wizard.Queries.GetAnomalyRules;
 

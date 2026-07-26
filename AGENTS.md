@@ -18,10 +18,14 @@
 - Testing Suite: xUnit (Backend), pytest (Python), Playwright E2E.
 
 ## Enterprise Architecture Constraints
+- CQRS Pattern: Implement using Martin Björkström's high-performance, MIT-licensed `Mediator` source generator OR pure C# `ICommandHandler<TRequest, TResponse>` interfaces. Do NOT import `MediatR` v13+ or `AutoMapper` v15+.
 - Domain Layer: Entities, Value Objects, Domain Events.
-- Application Layer: Commands, Queries, DTO records, Validators. 
 - Infrastructure Layer: EF Core, AES-256 field encryption, deterministic blind indexes via HMAC-SHA256 for exact-match voter checks.
 - Presentation Layer: Controllers using strict API Versioning (`/api/v1/`). Global exception middleware intercepting faults to render clean RFC7807 ProblemDetails.
+
+## Package & Licensing Enforcement Policy
+- STRICT MANDATE: Use ONLY MIT, Apache 2.0, or BSD permissive open-source packages. 
+- BANNED PACKAGES: `MediatR` (v13+), `AutoMapper` (v15+), `iTextSharp`, `QuestPDF` (v2023.1+), or any library requiring commercial key registration.
 
 ## Security & Privacy Guardrails (Strict SAST / DAST / MAST Compliance)
 - **[SAST] EF Core Queries & Validation**: Parameterized EF queries exclusively. FluentValidation on all models mapping to RFC7807 ProblemDetails. Reject over-posting and unknown JSON parameters.
@@ -44,3 +48,6 @@
   - **SAST (Static Application Security Testing)**: Enforces automatic code analysis (using Roslyn analyzers for C#, Bandit for Python) to identify SQL injections, hardcoded keys, and directory traversals before compilation.
   - **DAST (Dynamic Application Security Testing)**: Mandates dynamic endpoint vulnerability checks (CORS restrictions, CSP policies, prevention of error trace leakage via RFC 7807).
   - **MAST (Mobile Application Security Testing)**: Assures Capacitor security, requiring secure local storage and ATS/Android Network Security configurations for WebView communications.
+
+
+

@@ -1,6 +1,18 @@
+import io
 import re
 from typing import Generator, Dict, Any
-import fitz  # PyMuPDF
+
+try:
+    import fitz  # PyMuPDF
+    HAS_PYMUPDF = True
+except ImportError:
+    HAS_PYMUPDF = False
+
+try:
+    import pypdf
+    HAS_PYPDF = True
+except ImportError:
+    HAS_PYPDF = False
 
 # Optimized regex patterns
 EPIC_PATTERN = re.compile(r'\b[A-Z]{3}\d{7}\b|\b[A-Z]{3}/\d{2}/\d{3}/\d{6}\b')
@@ -12,56 +24,57 @@ GENDER_PATTERN = re.compile(r'(?:Sex|Gender|लिंग)\s*[:\.\s\-]+\s*(Male|F
 def parse_electoral_roll(file_bytes: bytes) -> Generator[Dict[str, Any], None, None]:
     """
     High-performance stream-based parser for Indian Electoral Rolls.
-    Processes pages sequentially using PyMuPDF to keep memory footprint minimal.
+    Supports pypdf (BSD License) and PyMuPDF for maximum open-source flexibility.
     """
-    # Open PDF stream
-    doc = fitz.open(stream=file_bytes, filetype="pdf")
-    
-    for page_num in range(len(doc)):
-        page = doc.load_page(page_num)
-        text = page.get_text("text")
-        
-        # Parse page metadata or constituency details from headers/footers (mock values for now)
+    page_texts = []
+
+    if HAS_PYMUPDF:
+        doc = fitz.open(stream=file_bytes, filetype="pdf")
+        for page_num in range(len(doc)):
+            page_texts.append(doc.load_page(page_num).get_text("text"))
+        doc.close()
+    elif HAS_PYPDF:
+        reader = pypdf.PdfReader(io.BytesIO(file_bytes))
+        for page in reader.pages:
+            page_texts.append(page.extract_text() or "")
+    else:
+        raise RuntimeError("No suitable open-source PDF parsing engine available (install pypdf or PyMuPDF).")
+
+    for page_num, text in enumerate(page_texts):
         assembly_constituency = "Constituency 1"
         part_number = f"Part-{page_num + 1}"
         section_number = "Section-1"
         polling_station_name = "Government Primary School"
         polling_station_location = "Room 1"
-        
-        # Find all EPIC card number matches and their positions in the text
+
         epic_matches = list(EPIC_PATTERN.finditer(text))
         if not epic_matches:
             continue
-            
-        # Parse by chunking text between consecutive EPIC number matches
+
         for i in range(len(epic_matches)):
             start_idx = epic_matches[i].start()
             end_idx = epic_matches[i+1].start() if i + 1 < len(epic_matches) else len(text)
-            
+
             chunk = text[start_idx:end_idx]
-            
-            # Extract fields using regex patterns
             epic_number = epic_matches[i].group(0)
-            
+
             name_match = NAME_PATTERN.search(chunk)
             name = name_match.group(1).strip() if name_match else "UNKNOWN"
-            
+
             house_match = HOUSE_NO_PATTERN.search(chunk)
             house_no = house_match.group(1).strip() if house_match else "N/A"
-            
+
             age_match = AGE_PATTERN.search(chunk)
             age = int(age_match.group(1)) if age_match else 0
-            
+
             gender_match = GENDER_PATTERN.search(chunk)
             gender = gender_match.group(1).strip() if gender_match else "UNKNOWN"
-            
-            # Map Hindi gender designations to standard English values
+
             if gender in ["पुरुष", "Male"]:
                 gender = "Male"
             elif gender in ["महिला", "Female"]:
                 gender = "Female"
-            
-            # Yield record immediately as a dictionary
+
             yield {
                 "epicNumber": epic_number,
                 "fullName": name,
@@ -77,5 +90,3 @@ def parse_electoral_roll(file_bytes: bytes) -> Generator[Dict[str, Any], None, N
                 "bloName": "TBD",
                 "bloContact": "0000000000"
             }
-            
-    doc.close()

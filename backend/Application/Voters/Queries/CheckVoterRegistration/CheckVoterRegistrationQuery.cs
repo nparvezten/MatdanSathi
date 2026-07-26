@@ -1,7 +1,6 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MatdanSathi.API.Application.Common.Interfaces;
 using MatdanSathi.API.Domain.Entities;
