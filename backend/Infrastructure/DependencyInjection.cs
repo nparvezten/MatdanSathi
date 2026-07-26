@@ -20,11 +20,23 @@ public static class DependencyInjection
 
         services.AddSingleton<ICryptographyService, CryptographyService>();
 
-        // 2. Register ApplicationDbContext referencing PostgreSQL
+        // 2. Register ApplicationDbContext (Supports PostgreSQL with zero-config SQLite local fallback for developers)
         services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseNpgsql(
-                configuration.GetConnectionString("DefaultConnection"),
-                b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+        {
+            var connStr = configuration.GetConnectionString("DefaultConnection") ?? "";
+            var useSqlite = configuration.GetValue<bool>("UseSqlite") || string.IsNullOrWhiteSpace(connStr) || connStr.Contains("matdarsathi_dev.db");
+
+            if (useSqlite || !connStr.Contains("Host="))
+            {
+                options.UseSqlite("Data Source=matdarsathi_dev.db",
+                    b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName));
+            }
+            else
+            {
+                options.UseNpgsql(connStr,
+                    b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName));
+            }
+        });
 
         // 3. Bind the application db context interface to implementation
         services.AddScoped<IApplicationDbContext>(provider =>

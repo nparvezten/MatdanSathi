@@ -97,17 +97,24 @@ try
 
     var app = builder.Build();
 
-    // Database Migration and Seeding on Startup
+    // Database Migration and Seeding on Startup (Supports PostgreSQL and Zero-Config SQLite local dev)
     using (var scope = app.Services.CreateScope())
     {
         var services = scope.ServiceProvider;
         try
         {
             var dbContext = services.GetRequiredService<ApplicationDbContext>();
-            dbContext.Database.Migrate();
+            if (dbContext.Database.IsSqlite())
+            {
+                dbContext.Database.EnsureCreated();
+            }
+            else
+            {
+                dbContext.Database.Migrate();
+            }
             var cryptoService = services.GetRequiredService<ICryptographyService>();
             DbInitializer.Initialize(dbContext, cryptoService);
-            Log.Information("Database successfully migrated and seeded.");
+            Log.Information("Database successfully migrated/created and seeded.");
         }
         catch (Exception ex)
         {
