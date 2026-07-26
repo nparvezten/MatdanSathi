@@ -10,10 +10,13 @@ using System.Threading.Tasks;
 using MatdarSathi.API.Application.Common.Interfaces;
 using MatdarSathi.API.Domain.Entities;
 
+using Asp.Versioning;
+
 namespace MatdarSathi.API.Controllers.v1;
 
 [ApiController]
-[Route("api/v1/[controller]")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/[controller]")]
 public class AuthController : ControllerBase
 {
     private readonly IConfiguration _configuration;

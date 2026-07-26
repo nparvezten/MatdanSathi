@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -9,7 +10,8 @@ using MatdarSathi.API.Domain.Entities;
 namespace MatdarSathi.API.Controllers.v1;
 
 [ApiController]
-[Route("api/v1/[controller]")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/[controller]")]
 public class AdminController : ControllerBase
 {
     private readonly IApplicationDbContext _dbContext;
