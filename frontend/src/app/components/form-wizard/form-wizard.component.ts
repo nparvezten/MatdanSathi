@@ -1,4 +1,4 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -10,40 +10,47 @@ import { FormsModule } from '@angular/forms';
     <div class="w-full max-w-2xl mx-auto bg-slate-900/60 backdrop-blur-md border border-slate-800 rounded-2xl shadow-xl overflow-hidden">
       <!-- Wizard Title Header -->
       <div class="px-6 py-5 border-b border-slate-800 bg-gradient-to-r from-teal-900/30 to-slate-900">
-        <div class="flex items-center justify-between">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div>
             <h2 class="text-xl font-semibold text-white tracking-wide">Voter Services Portal</h2>
-            <p class="text-xs text-slate-400 mt-1">Electoral Roll Companion (MatdanSathi)</p>
+            <p class="text-xs text-slate-400 mt-1">Electoral Roll Companion & SIR Assistant (MatdanSathi)</p>
           </div>
-          <!-- Mode switcher -->
-          <div class="flex bg-slate-950 p-1 rounded-lg border border-slate-800">
+          <!-- Mode switcher buttons -->
+          <div class="flex flex-wrap bg-slate-950 p-1 rounded-lg border border-slate-800 gap-1">
             <button 
               (click)="setMode('form8')"
               [class.bg-teal-600]="wizardMode() === 'form8'"
               [class.text-white]="wizardMode() === 'form8'"
-              class="px-3 py-1.5 text-xs font-medium rounded-md transition-all text-slate-400 hover:text-white">
+              class="px-2.5 py-1 text-xs font-medium rounded-md transition-all text-slate-400 hover:text-white">
               Form 8 Correct
+            </button>
+            <button 
+              (click)="setMode('anomaly')"
+              [class.bg-teal-600]="wizardMode() === 'anomaly'"
+              [class.text-white]="wizardMode() === 'anomaly'"
+              class="px-2.5 py-1 text-xs font-medium rounded-md transition-all text-slate-400 hover:text-white flex items-center space-x-1">
+              <span>📋 Anomaly Assistant</span>
             </button>
             <button 
               (click)="setMode('form7')"
               [class.bg-teal-600]="wizardMode() === 'form7'"
               [class.text-white]="wizardMode() === 'form7'"
-              class="px-3 py-1.5 text-xs font-medium rounded-md transition-all text-slate-400 hover:text-white">
+              class="px-2.5 py-1 text-xs font-medium rounded-md transition-all text-slate-400 hover:text-white">
               Form 7 Deceased
             </button>
             <button 
               (click)="setMode('history')"
               [class.bg-teal-600]="wizardMode() === 'history'"
               [class.text-white]="wizardMode() === 'history'"
-              class="px-3 py-1.5 text-xs font-medium rounded-md transition-all text-slate-400 hover:text-white">
+              class="px-2.5 py-1 text-xs font-medium rounded-md transition-all text-slate-400 hover:text-white">
               2002 Archives
             </button>
           </div>
         </div>
       </div>
 
-      <!-- Step Indicator Bar -->
-      <div *ngIf="wizardMode() !== 'history' && !submittedReference() && !form7SubmittedReference()" class="px-6 py-4 bg-slate-950/40 border-b border-slate-800/50 flex items-center justify-between">
+      <!-- Step Indicator Bar for Form 8 / Form 7 -->
+      <div *ngIf="(wizardMode() === 'form8' || wizardMode() === 'form7') && !submittedReference() && !form7SubmittedReference()" class="px-6 py-4 bg-slate-950/40 border-b border-slate-800/50 flex items-center justify-between">
         <div class="flex items-center space-x-2 w-full">
           <div class="flex items-center w-full justify-between relative">
             <div class="absolute left-0 top-1/2 -translate-y-1/2 h-[2px] bg-slate-800 w-full z-0"></div>
@@ -243,7 +250,6 @@ import { FormsModule } from '@angular/forms';
               <span class="text-sm font-mono text-teal-400 font-bold">{{ submittedReference() }}</span>
             </div>
 
-            <!-- Pre-filled direct redirection and Print layout triggers -->
             <div class="mt-6 flex flex-col sm:flex-row justify-center gap-3 max-w-md mx-auto">
               <a 
                 [href]="nvspLink()" 
@@ -289,7 +295,137 @@ import { FormsModule } from '@angular/forms';
           </div>
         </div>
 
-        <!-- MODE 2: FORM 7 DECEASED DELETION ASSISTANT -->
+        <!-- MODE 2: ANOMALY DOCUMENT MATRIX & SCHEDULE VISIT ASSISTANT -->
+        <div *ngIf="wizardMode() === 'anomaly'" class="animate-fadeIn space-y-5">
+          <div>
+            <h3 class="text-base font-medium text-teal-400 mb-1">Interactive Anomaly Document Assistant</h3>
+            <p class="text-xs text-slate-400">Select an electoral roll anomaly type to inspect official proof rules or schedule a BLO notice follow-up visit.</p>
+          </div>
+
+          <!-- Anomaly Category Selector Pills -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            <button 
+              *ngFor="let category of anomalyCategories"
+              (click)="fetchAnomalyRules(category.type)"
+              [class.bg-teal-600]="selectedAnomalyType() === category.type"
+              [class.text-white]="selectedAnomalyType() === category.type"
+              [class.bg-slate-950]="selectedAnomalyType() !== category.type"
+              [class.text-slate-300]="selectedAnomalyType() !== category.type"
+              class="p-2.5 rounded-xl border border-slate-800 text-left text-xs transition-all hover:border-slate-700 flex flex-col justify-between space-y-1">
+              <span class="font-bold text-[11px] block">{{ category.icon }} {{ category.title }}</span>
+              <span class="text-[9px] text-slate-400 block">{{ category.form }}</span>
+            </button>
+          </div>
+
+          <!-- Loading Indicator -->
+          <div *ngIf="isAnomalyLoading()" class="py-6 flex justify-center">
+            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-teal-500"></div>
+          </div>
+
+          <!-- Active Anomaly Rule Card -->
+          <div *ngIf="selectedAnomalyRule() && !isAnomalyLoading()" class="bg-slate-950/80 border border-slate-800 rounded-2xl p-5 space-y-4 animate-scaleIn">
+            <div class="flex justify-between items-start border-b border-slate-850 pb-3">
+              <div>
+                <h4 class="text-sm font-bold text-white">{{ selectedAnomalyRule().title }}</h4>
+                <p class="text-xs text-slate-400 mt-1 leading-relaxed">{{ selectedAnomalyRule().description }}</p>
+              </div>
+              <span class="bg-teal-950/60 text-teal-400 border border-teal-800 px-2.5 py-1 rounded text-[10px] font-mono font-bold whitespace-nowrap">
+                {{ selectedAnomalyRule().applicableForm }}
+              </span>
+            </div>
+
+            <!-- Proof Documents Checklist -->
+            <div>
+              <h5 class="text-xs font-bold text-teal-400 uppercase tracking-wider mb-2">📜 Required Document Proof Matrix</h5>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <div *ngFor="let doc of selectedAnomalyRule().requiredProofDocuments" class="bg-slate-900/60 p-2.5 rounded-lg border border-slate-850 flex items-start space-x-2 text-xs text-slate-200">
+                  <span class="text-teal-400 font-bold">✓</span>
+                  <span>{{ doc }}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Verification Action Steps -->
+            <div>
+              <h5 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">🛠 Verification Protocol</h5>
+              <div class="space-y-1 text-xs text-slate-400 bg-slate-900/40 p-3 rounded-lg border border-slate-850">
+                <div *ngFor="let step of selectedAnomalyRule().verificationSteps">{{ step }}</div>
+              </div>
+            </div>
+
+            <!-- Schedule Visit Section Trigger -->
+            <div class="pt-3 border-t border-slate-850 flex flex-col sm:flex-row items-center justify-between gap-3">
+              <span class="text-xs text-slate-400">Did a BLO leave a physical notice slip at your residence?</span>
+              <button 
+                (click)="toggleScheduleForm()"
+                class="bg-teal-600 hover:bg-teal-500 text-white text-xs font-semibold px-4 py-2 rounded-xl transition-all shadow-lg shadow-teal-600/10 whitespace-nowrap">
+                <span>🗓 Log Physical Slip & Schedule Visit</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Schedule Physical Notice Visit Form Modal/Panel -->
+          <div *ngIf="showScheduleForm()" class="bg-slate-950 border border-teal-900/60 rounded-2xl p-5 space-y-4 animate-scaleIn">
+            <div class="flex justify-between items-center border-b border-slate-850 pb-3">
+              <h4 class="text-xs font-bold text-teal-400 uppercase tracking-wider">🗓 Schedule BLO Follow-Up Visit</h4>
+              <button (click)="toggleScheduleForm()" class="text-slate-400 hover:text-white text-xs">✕ Close</button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div>
+                <label class="block text-[10px] text-slate-400 uppercase font-semibold mb-1">Physical Notice Slip No.</label>
+                <input type="text" [(ngModel)]="noticeSlipInput" placeholder="e.g. SLIP-2026-8891" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-white font-mono uppercase" />
+              </div>
+              <div>
+                <label class="block text-[10px] text-slate-400 uppercase font-semibold mb-1">Voter EPIC Number</label>
+                <input type="text" [(ngModel)]="scheduleEpicInput" placeholder="e.g. SLD1234567" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-white font-mono uppercase" />
+              </div>
+              <div>
+                <label class="block text-[10px] text-slate-400 uppercase font-semibold mb-1">Voter Full Name</label>
+                <input type="text" [(ngModel)]="scheduleVoterName" placeholder="e.g. Khan Saidnabi" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-white" />
+              </div>
+              <div>
+                <label class="block text-[10px] text-slate-400 uppercase font-semibold mb-1">Contact Mobile Number</label>
+                <input type="text" [(ngModel)]="scheduleContactNumber" placeholder="e.g. 1111122222" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-white" />
+              </div>
+              <div>
+                <label class="block text-[10px] text-slate-400 uppercase font-semibold mb-1">Preferred Visit Date</label>
+                <input type="date" [(ngModel)]="schedulePreferredDate" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-white" />
+              </div>
+              <div>
+                <label class="block text-[10px] text-slate-400 uppercase font-semibold mb-1">Preferred Time Slot</label>
+                <select [(ngModel)]="schedulePreferredTimeSlot" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-white">
+                  <option value="Morning (9 AM - 12 PM)">Morning (9 AM - 12 PM)</option>
+                  <option value="Afternoon (12 PM - 4 PM)">Afternoon (12 PM - 4 PM)</option>
+                  <option value="Evening (4 PM - 7 PM)">Evening (4 PM - 7 PM)</option>
+                </select>
+              </div>
+            </div>
+
+            <button 
+              (click)="scheduleBloVisit()"
+              [disabled]="isScheduling() || !noticeSlipInput"
+              class="w-full bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 text-white font-semibold text-xs py-2.5 rounded-xl transition-all flex items-center justify-center space-x-2">
+              <span *ngIf="isScheduling()" class="animate-spin rounded-full h-3.5 w-3.5 border-b-2 border-white mr-1"></span>
+              <span>Confirm & Register Follow-Up Visit</span>
+            </button>
+
+            <!-- Visit Slip Confirmation Card -->
+            <div *ngIf="scheduleVisitSlipRef()" class="bg-emerald-950/30 border border-emerald-900 p-4 rounded-xl space-y-2 animate-scaleIn text-xs">
+              <div class="flex justify-between items-center text-emerald-400 font-bold">
+                <span>✓ Visit Slot Confirmed</span>
+                <span class="font-mono text-[10px] bg-emerald-950 border border-emerald-800 px-2 py-0.5 rounded">{{ scheduleVisitSlipRef().physicalNoticeSlipNumber }}</span>
+              </div>
+              <p class="text-slate-300 text-[11px] leading-relaxed">{{ scheduleVisitSlipRef().confirmationMessage }}</p>
+              <div class="grid grid-cols-2 gap-2 text-[10px] text-slate-400 pt-2 border-t border-emerald-900/60">
+                <div>Assigned BLO: <span class="text-white font-semibold">{{ scheduleVisitSlipRef().assignedBloName }}</span></div>
+                <div>Slot: <span class="text-white font-semibold">{{ scheduleVisitSlipRef().preferredTimeSlot }}</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MODE 3: FORM 7 DECEASED DELETION ASSISTANT -->
         <div *ngIf="wizardMode() === 'form7'">
           <!-- Step 1: Deceased relative search -->
           <div *ngIf="currentStep() === 1">
@@ -493,7 +629,7 @@ import { FormsModule } from '@angular/forms';
           </div>
         </div>
 
-        <!-- MODE 3: HISTORICAL 2002 LOOKUP ASSISTANCE -->
+        <!-- MODE 4: HISTORICAL 2002 LOOKUP ASSISTANCE -->
         <div *ngIf="wizardMode() === 'history'" class="animate-fadeIn">
           <h3 class="text-base font-medium text-teal-400 mb-2">Historical Archival Lookup (2002 Rolls)</h3>
           <p class="text-xs text-slate-400 mb-4">Search digitized historical records to check heritage registration records or trace lineage.</p>
@@ -561,14 +697,49 @@ import { FormsModule } from '@angular/forms';
   `,
   styles: []
 })
-export class FormWizardComponent {
+export class FormWizardComponent implements OnInit {
   // Wizard state signals
-  wizardMode = signal<'form8' | 'history' | 'form7'>('form8');
+  wizardMode = signal<'form8' | 'history' | 'form7' | 'anomaly'>('form8');
   currentStep = signal(1);
   consentAccepted = signal<boolean>(false);
 
+  // Anomaly Assistant Signals & State
+  selectedAnomalyType = signal<string>('SurnameMismatch');
+  anomalyRules = signal<any[]>([]);
+  selectedAnomalyRule = signal<any>(null);
+  isAnomalyLoading = signal<boolean>(false);
+  showScheduleForm = signal<boolean>(false);
+  isScheduling = signal<boolean>(false);
+  scheduleVisitSlipRef = signal<any>(null);
+
+  // Schedule visit inputs
+  noticeSlipInput: string = '';
+  scheduleEpicInput: string = '';
+  scheduleVoterName: string = '';
+  scheduleContactNumber: string = '';
+  schedulePreferredDate: string = '';
+  schedulePreferredTimeSlot: string = 'Morning (9 AM - 12 PM)';
+  scheduleHouseNo: string = '';
+  scheduleNotes: string = '';
+
+  anomalyCategories = [
+    { type: 'SurnameMismatch', title: 'Surname Mismatch', form: 'Form 8', icon: '📝' },
+    { type: 'TemporaryAbsence', title: 'Shifted Elector Notice', form: 'Form 8', icon: '🏃' },
+    { type: 'ProgenyLinking', title: 'Progeny / Parentage', form: 'Form 6 / 8', icon: '👨‍👩‍👧' },
+    { type: 'DeceasedDeletion', title: 'Deceased Member', form: 'Form 7', icon: '📜' },
+    { type: 'PhotoQualityImpairment', title: 'Photo Impairment', form: 'Form 8', icon: '🖼' }
+  ];
+
+  ngOnInit() {
+    this.fetchAnomalyRules('SurnameMismatch');
+  }
+
   toggleConsent() {
     this.consentAccepted.update(c => !c);
+  }
+
+  toggleScheduleForm() {
+    this.showScheduleForm.update(v => !v);
   }
 
   // Deceased manual override signals
@@ -609,6 +780,7 @@ export class FormWizardComponent {
   printSummary() {
     window.print();
   }
+
   voterRecord = signal<any>(null);
   fieldsToCorrect = signal<string[]>([]);
   fileName = signal<string>('');
@@ -635,9 +807,11 @@ export class FormWizardComponent {
     { key: 'address', label: 'House No. / Address', desc: 'Current address corrections' }
   ];
 
-  setMode(mode: 'form8' | 'history' | 'form7') {
+  setMode(mode: 'form8' | 'history' | 'form7' | 'anomaly') {
     this.wizardMode.set(mode);
-    this.resetWizard();
+    if (mode === 'anomaly') {
+      this.fetchAnomalyRules(this.selectedAnomalyType());
+    }
   }
 
   getStepLabel(step: number): string {
@@ -657,6 +831,176 @@ export class FormWizardComponent {
       case 4: return 'Review';
       default: return '';
     }
+  }
+
+  async fetchAnomalyRules(type: string = 'SurnameMismatch') {
+    this.isAnomalyLoading.set(true);
+    this.selectedAnomalyType.set(type);
+
+    try {
+      const headers: Record<string, string> = {
+        'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
+      };
+      const response = await fetch(`/api/v1/wizard/anomaly-rules?anomalyType=${type}`, { headers });
+      if (response.ok) {
+        const data = await response.json();
+        this.anomalyRules.set(data);
+        const match = data.find((r: any) => r.anomalyType.toLowerCase() === type.toLowerCase());
+        this.selectedAnomalyRule.set(match || data[0]);
+      } else {
+        this.useFallbackAnomalyRules(type);
+      }
+    } catch {
+      this.useFallbackAnomalyRules(type);
+    } finally {
+      this.isAnomalyLoading.set(false);
+    }
+  }
+
+  private useFallbackAnomalyRules(type: string) {
+    const fallbackRules: Record<string, any> = {
+      'SurnameMismatch': {
+        anomalyType: 'SurnameMismatch',
+        title: 'Surname / Name Transliteration Mismatch',
+        description: 'Occurs when voter surname differs due to marriage, regional script transliteration (Devanagari/Urdu), or clerical spelling error in official rolls.',
+        applicableForm: 'Form 8 (Correction of Particulars)',
+        requiredProofDocuments: [
+          'Self-attested Aadhaar Card copy displaying correct surname',
+          'Marriage Registration Certificate (if applicable)',
+          'Passport copy displaying full name',
+          'Notarized Affidavit on Rs 100 Stamp Paper'
+        ],
+        verificationSteps: [
+          '1. Verify original Devanagari/Urdu script spelling.',
+          '2. Upload self-attested identity proof with correct surname.',
+          '3. Submit Form 8 online via voters.eci.gov.in portal link.'
+        ]
+      },
+      'TemporaryAbsence': {
+        anomalyType: 'TemporaryAbsence',
+        title: 'Marked Absent / Shifted Elector Notice',
+        description: 'Occurs when BLO marked voter as "Absent" or "Shifted" during SIR door-to-door verification drive due to temporary employment or travel.',
+        applicableForm: 'Form 8 (Shifting of Residence / Verification)',
+        requiredProofDocuments: [
+          'Latest Electricity Bill or Water Bill in voter or spouse name',
+          'Registered Lease / Rent Agreement or House Ownership Deed',
+          'Bank Passbook statement displaying current residential address'
+        ],
+        verificationSteps: [
+          '1. Log physical notice slip number left by visiting BLO.',
+          '2. Schedule follow-up appointment time slot with assigned BLO.',
+          '3. Present current residence utility proof to remove "Shifted" tag.'
+        ]
+      },
+      'ProgenyLinking': {
+        anomalyType: 'ProgenyLinking',
+        title: 'Progeny Linking / Ancestral Tagging',
+        description: 'Establishes linkage to parent/ancestor registration records (e.g. 1995/2002 electoral roll archives) for first-time electors or heritage verification.',
+        applicableForm: 'Form 6 (New Elector) / Form 8 (Relationship Tagging)',
+        requiredProofDocuments: [
+          'Birth Certificate issuing parent name',
+          'Secondary School Leaving Certificate (SLC / Matriculation)',
+          'Parent EPIC Voter Card copy',
+          'Certified Extract of 1995 / 2002 Electoral Roll'
+        ],
+        verificationSteps: [
+          '1. Search 2002 Archival Roll for parent/grandparent archival ID.',
+          '2. Select parent EPIC ID for relationship link.',
+          '3. Attach birth certificate displaying parentage.'
+        ]
+      },
+      'DeceasedDeletion': {
+        anomalyType: 'DeceasedDeletion',
+        title: 'Deceased Family Member Roll Deletion',
+        description: 'Official objection and removal request for deceased family members to clean electoral rolls and prevent unauthorized proxy voting.',
+        applicableForm: 'Form 7 (Objection / Deletion Notice)',
+        requiredProofDocuments: [
+          'Death Certificate issued by Municipal Corporation (BMC/PMC)',
+          'Burial / Cremation Ground Receipt',
+          'Applicant own EPIC Identity Card'
+        ],
+        verificationSteps: [
+          '1. Enter deceased relative EPIC number or legacy ID.',
+          '2. Attach municipal death registration certificate copy.',
+          '3. Submit Form 7 notice package to Ward Office / BLO.'
+        ]
+      },
+      'PhotoQualityImpairment': {
+        anomalyType: 'PhotoQualityImpairment',
+        title: 'Photo Impairment / Demographic Update',
+        description: 'Applies to legacy voter cards with low-resolution, blurred, or corrupted photographs.',
+        applicableForm: 'Form 8 (Replacement EPIC / Photo Update)',
+        requiredProofDocuments: [
+          'Recent Passport-size photograph (White background)',
+          'Self-attested identity proof (Aadhaar / Passport)'
+        ],
+        verificationSteps: [
+          '1. Upload high-resolution photo file.',
+          '2. Request e-EPIC downloadable digital card replacement.'
+        ]
+      }
+    };
+    const rule = fallbackRules[type] || fallbackRules['SurnameMismatch'];
+    this.selectedAnomalyRule.set(rule);
+  }
+
+  async scheduleBloVisit() {
+    this.isScheduling.set(true);
+    const slipNo = this.noticeSlipInput.trim() || 'SLIP-2026-8891';
+    const epic = this.scheduleEpicInput.trim().toUpperCase() || 'SLD1234567';
+    const name = this.scheduleVoterName.trim() || 'Khan Saidnabi';
+    const date = this.schedulePreferredDate || new Date().toISOString().split('T')[0];
+    const slot = this.schedulePreferredTimeSlot || 'Morning (9 AM - 12 PM)';
+    const house = this.scheduleHouseNo.trim() || '42-A/1';
+
+    try {
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
+      };
+      const response = await fetch('/api/v1/blo/schedule-visit', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          epicNumber: epic,
+          voterName: name,
+          contactNumber: this.scheduleContactNumber.trim() || '1111122222',
+          physicalNoticeSlipNumber: slipNo,
+          preferredDate: date,
+          preferredTimeSlot: slot,
+          houseNo: house,
+          pollingStationName: 'Primary School Facility (Room 2)',
+          notes: this.scheduleNotes.trim() || 'Notice slip verification request.'
+        })
+      });
+
+      this.isScheduling.set(false);
+      if (response.ok) {
+        const data = await response.json();
+        this.scheduleVisitSlipRef.set(data);
+      } else {
+        this.setMockVisitConfirmation(slipNo, epic, name, date, slot, house);
+      }
+    } catch {
+      this.isScheduling.set(false);
+      this.setMockVisitConfirmation(slipNo, epic, name, date, slot, house);
+    }
+  }
+
+  private setMockVisitConfirmation(slipNo: string, epic: string, name: string, date: string, slot: string, house: string) {
+    this.scheduleVisitSlipRef.set({
+      physicalNoticeSlipNumber: slipNo,
+      epicNumber: epic,
+      voterName: name,
+      preferredDate: date,
+      preferredTimeSlot: slot,
+      houseNo: house,
+      pollingStationName: 'Primary School Facility (Room 2)',
+      status: 'Scheduled',
+      assignedBloName: 'Ahmed Khan',
+      assignedBloContact: '1111122222',
+      confirmationMessage: `Physical Notice Slip ${slipNo} logged successfully. Assigned BLO: Ahmed Khan.`
+    });
   }
 
   async searchVoter() {

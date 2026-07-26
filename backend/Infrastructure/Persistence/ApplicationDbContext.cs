@@ -23,6 +23,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<VoterProfile> VoterProfiles => Set<VoterProfile>();
     public DbSet<VerificationLog> VerificationLogs => Set<VerificationLog>();
     public DbSet<BloCoordinateMap> BloCoordinateMaps => Set<BloCoordinateMap>();
+    public DbSet<VisitSlip> VisitSlips => Set<VisitSlip>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -71,6 +72,17 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
             entity.Property(e => e.RowVersion)
                 .IsConcurrencyToken();
         });
+
+        // --- VisitSlip Configuration ---
+        modelBuilder.Entity<VisitSlip>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+
+            entity.HasQueryFilter(e => !e.IsDeleted);
+
+            entity.Property(e => e.RowVersion)
+                .IsConcurrencyToken();
+        });
     }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -92,6 +104,31 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
                 if (!string.IsNullOrEmpty(entry.Entity.DateOfBirth))
                 {
                     entry.Entity.DateOfBirthEncrypted = _cryptographyService.Encrypt(entry.Entity.DateOfBirth.Trim());
+                }
+                if (!string.IsNullOrEmpty(entry.Entity.BloContact))
+                {
+                    entry.Entity.BloContactEncrypted = _cryptographyService.Encrypt(entry.Entity.BloContact.Trim());
+                }
+            }
+        }
+
+        // 1b. Process unmapped cleartext properties for VisitSlips (encryption + blind indexing)
+        foreach (var entry in ChangeTracker.Entries<VisitSlip>())
+        {
+            if (entry.State == EntityState.Added || entry.State == EntityState.Modified)
+            {
+                if (!string.IsNullOrEmpty(entry.Entity.EpicNumber))
+                {
+                    entry.Entity.EpicNumberBlindIndex = _cryptographyService.GenerateBlindIndex(entry.Entity.EpicNumber.Trim().ToUpperInvariant());
+                    entry.Entity.EpicNumberEncrypted = _cryptographyService.Encrypt(entry.Entity.EpicNumber.Trim().ToUpperInvariant());
+                }
+                if (!string.IsNullOrEmpty(entry.Entity.VoterName))
+                {
+                    entry.Entity.VoterNameEncrypted = _cryptographyService.Encrypt(entry.Entity.VoterName.Trim());
+                }
+                if (!string.IsNullOrEmpty(entry.Entity.ContactNumber))
+                {
+                    entry.Entity.ContactNumberEncrypted = _cryptographyService.Encrypt(entry.Entity.ContactNumber.Trim());
                 }
                 if (!string.IsNullOrEmpty(entry.Entity.BloContact))
                 {

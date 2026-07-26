@@ -11,6 +11,9 @@ using MatdanSathi.API.Application.Common.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.RateLimiting;
 
+using MediatR;
+using MatdanSathi.API.Application.Visits.Commands.ScheduleBloVisit;
+
 namespace MatdanSathi.API.Controllers.v1;
 
 [ApiController]
@@ -22,11 +25,25 @@ public class BloController : ControllerBase
 {
     private readonly IApplicationDbContext _context;
     private readonly ICryptographyService _cryptographyService;
+    private readonly IMediator _mediator;
 
-    public BloController(IApplicationDbContext context, ICryptographyService cryptographyService)
+    public BloController(
+        IApplicationDbContext context,
+        ICryptographyService cryptographyService,
+        IMediator mediator)
     {
         _context = context;
         _cryptographyService = cryptographyService;
+        _mediator = mediator;
+    }
+
+    [HttpPost("schedule-visit")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(VisitSlipDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> ScheduleVisit([FromBody] ScheduleBloVisitCommand command)
+    {
+        var result = await _mediator.Send(command);
+        return Ok(result);
     }
 
     [HttpGet("lookup")]

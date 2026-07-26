@@ -10,6 +10,7 @@ public interface IApplicationDbContext
     DbSet<VoterProfile> VoterProfiles { get; }
     DbSet<VerificationLog> VerificationLogs { get; }
     DbSet<BloCoordinateMap> BloCoordinateMaps { get; }
+    DbSet<VisitSlip> VisitSlips { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
