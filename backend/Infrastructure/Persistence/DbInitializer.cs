@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
-using MatdanSathi.API.Application.Common.Interfaces;
-using MatdanSathi.API.Domain.Entities;
+using MatdarSathi.API.Application.Common.Interfaces;
+using MatdarSathi.API.Domain.Entities;
 
-namespace MatdanSathi.API.Infrastructure.Persistence;
+namespace MatdarSathi.API.Infrastructure.Persistence;
 
 public static class DbInitializer
 {

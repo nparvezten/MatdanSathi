@@ -51,7 +51,7 @@ If you prefer to run services manually on your local system:
 
 #### Step 1: Start the Backend .NET API
 ```bash
-dotnet run --project backend/API/MatdanSathi.API.csproj --launch-profile http
+dotnet run --project backend/API/MatdarSathi.API.csproj --launch-profile http
 ```
 *(The backend automatically runs EF Core migrations and seeds baseline test records on startup).*
 
@@ -78,7 +78,7 @@ npx ng serve --port 4200 --proxy-config proxy.conf.json
 The application comes pre-loaded with sample baseline voter profiles and volunteer credentials for immediate testing:
 
 ### Volunteer Login Credentials
-*   **Email:** `verifier@matdansathi.org`
+*   **Email:** `verifier@matdarsathi.org`
 *   **Password:** `SecurePassword123!`
 
 ### Sample Active EPIC Numbers (Form 8 Correction Lookup)
@@ -111,7 +111,7 @@ This script automatically executes:
 
 ## 🛡️ Security, Privacy & DPDP Act 2023 Compliance
 
-To eliminate data leakage liability, MatdanSathi adheres to strict security standards:
+To eliminate data leakage liability, MatdarSathi adheres to strict security standards:
 1. **AES-256 Field Encryption:** Cleartext names, phone numbers, and dates of birth are encrypted before database persistence.
 2. **HMAC-SHA256 Blind Indexing:** Verification lookups query one-way cryptographic hashes, preventing database exposure during SQL execution.
 3. **Explicit Consent & Rate Limiting:** All verification queries require user privacy consent and are rate-limited (`strict-limit`) against web scrapers.

@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MatdanSathi.API.Application.Common.Interfaces;
+namespace MatdarSathi.API.Application.Common.Interfaces;
 
 public interface IRequest<out TResponse>
 {

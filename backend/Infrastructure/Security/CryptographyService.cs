@@ -3,9 +3,9 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.Extensions.Options;
-using MatdanSathi.API.Application.Common.Interfaces;
+using MatdarSathi.API.Application.Common.Interfaces;
 
-namespace MatdanSathi.API.Infrastructure.Security;
+namespace MatdarSathi.API.Infrastructure.Security;
 
 public class CryptographyService : ICryptographyService
 {

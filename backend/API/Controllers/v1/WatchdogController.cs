@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Asp.Versioning;
-using MatdanSathi.API.Application.Common.Interfaces;
+using MatdarSathi.API.Application.Common.Interfaces;
 
-namespace MatdanSathi.API.Controllers.v1;
+namespace MatdarSathi.API.Controllers.v1;
 
 [ApiController]
 [ApiVersion("1.0")]

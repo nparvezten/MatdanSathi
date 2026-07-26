@@ -2,10 +2,10 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using MatdanSathi.API.Application.Common.Interfaces;
-using MatdanSathi.API.Domain.Entities;
+using MatdarSathi.API.Application.Common.Interfaces;
+using MatdarSathi.API.Domain.Entities;
 
-namespace MatdanSathi.API.Application.Voters.Queries.CheckVoterRegistration;
+namespace MatdarSathi.API.Application.Voters.Queries.CheckVoterRegistration;
 
 public record CheckVoterRegistrationQuery(
     string EpicNumber,

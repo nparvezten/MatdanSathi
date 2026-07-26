@@ -1,8 +1,8 @@
 using Microsoft.Extensions.Options;
-using MatdanSathi.API.Infrastructure.Security;
+using MatdarSathi.API.Infrastructure.Security;
 using Xunit;
 
-namespace MatdanSathi.API.Tests;
+namespace MatdarSathi.API.Tests;
 
 public class CryptographyTests
 {

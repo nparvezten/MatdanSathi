@@ -3,9 +3,9 @@ using System.Linq;
 using System.Reflection;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-using MatdanSathi.API.Application.Common.Interfaces;
+using MatdarSathi.API.Application.Common.Interfaces;
 
-namespace MatdanSathi.API.Application;
+namespace MatdarSathi.API.Application;
 
 public static class DependencyInjection
 {

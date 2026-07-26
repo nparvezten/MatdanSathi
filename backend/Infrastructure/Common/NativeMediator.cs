@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.Extensions.DependencyInjection;
-using MatdanSathi.API.Application.Common.Interfaces;
+using MatdarSathi.API.Application.Common.Interfaces;
 
-namespace MatdanSathi.API.Infrastructure.Common;
+namespace MatdarSathi.API.Infrastructure.Common;
 
 public class NativeMediator : IMediator
 {

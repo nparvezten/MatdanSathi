@@ -1,4 +1,4 @@
-package com.matdansathi.app;
+package com.matdarsathi.app;
 
 import com.getcapacitor.BridgeActivity;
 

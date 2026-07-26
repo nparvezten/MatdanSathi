@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using MatdanSathi.API.Application.Wizard.Commands.GenerateHearingDossier;
-using MatdanSathi.API.Application.Wizard.Models;
-using MatdanSathi.API.Application.Wizard.Queries.GetAnomalyGuidance;
+using MatdarSathi.API.Application.Wizard.Commands.GenerateHearingDossier;
+using MatdarSathi.API.Application.Wizard.Models;
+using MatdarSathi.API.Application.Wizard.Queries.GetAnomalyGuidance;
 using Xunit;
 
-namespace MatdanSathi.API.Tests;
+namespace MatdarSathi.API.Tests;
 
 public class WizardTests
 {

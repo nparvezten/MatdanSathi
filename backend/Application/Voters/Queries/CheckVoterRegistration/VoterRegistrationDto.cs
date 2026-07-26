@@ -1,6 +1,6 @@
 using System;
 
-namespace MatdanSathi.API.Application.Voters.Queries.CheckVoterRegistration;
+namespace MatdarSathi.API.Application.Voters.Queries.CheckVoterRegistration;
 
 public record VoterRegistrationDto
 {

@@ -11,18 +11,18 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 echo -e "${CYAN}====================================================${NC}"
-echo -e "${CYAN}      MatdanSathi Ingestion & Secure Build Pipeline   ${NC}"
+echo -e "${CYAN}      MatdarSathi Ingestion & Secure Build Pipeline   ${NC}"
 echo -e "${CYAN}====================================================${NC}"
 
 # 1. Verification of C# .NET Backend
 echo -e "\n${YELLOW}[1/4] Restoring and Building C# .NET API Layer...${NC}"
-dotnet build backend/MatdanSathi.sln
+dotnet build backend/MatdarSathi.sln
 
 echo -e "${YELLOW}[1/4] Running C# static analysis check...${NC}"
-dotnet format backend/MatdanSathi.sln --verify-no-changes
+dotnet format backend/MatdarSathi.sln --verify-no-changes
 
 echo -e "${YELLOW}[1/4] Running Backend xUnit Tests...${NC}"
-dotnet test backend/MatdanSathi.sln --no-build
+dotnet test backend/MatdarSathi.sln --no-build
 
 # 2. Verification of Python Fast API Parser Service
 echo -e "\n${YELLOW}[2/4] Running Python FastAPI Parser pytest Suite...${NC}"

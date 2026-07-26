@@ -4,7 +4,7 @@ from fastapi.responses import StreamingResponse
 from config import settings
 from parser import parse_electoral_roll
 
-app = FastAPI(title="MatdanSathi Electoral Roll Parsing Service", version="1.0.0")
+app = FastAPI(title="MatdarSathi Electoral Roll Parsing Service", version="1.0.0")
 
 def verify_api_key(api_key: str = Header(None, alias="X-API-KEY")):
     """Verifies that requests originate from authorized internal services."""

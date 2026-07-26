@@ -2,10 +2,10 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
-using MatdanSathi.API.Application.Common.Interfaces;
-using MatdanSathi.API.Domain.Entities;
+using MatdarSathi.API.Application.Common.Interfaces;
+using MatdarSathi.API.Domain.Entities;
 
-namespace MatdanSathi.API.Application.Visits.Commands.ScheduleBloVisit;
+namespace MatdarSathi.API.Application.Visits.Commands.ScheduleBloVisit;
 
 public record ScheduleBloVisitCommand(
     string EpicNumber,

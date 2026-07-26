@@ -1,4 +1,4 @@
-namespace MatdanSathi.API.Application.Common.Interfaces;
+namespace MatdarSathi.API.Application.Common.Interfaces;
 
 public interface ICryptographyService
 {

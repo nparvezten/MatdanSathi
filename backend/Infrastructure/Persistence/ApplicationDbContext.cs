@@ -3,11 +3,11 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using MatdanSathi.API.Application.Common.Interfaces;
-using MatdanSathi.API.Domain.Common;
-using MatdanSathi.API.Domain.Entities;
+using MatdarSathi.API.Application.Common.Interfaces;
+using MatdarSathi.API.Domain.Common;
+using MatdarSathi.API.Domain.Entities;
 
-namespace MatdanSathi.API.Infrastructure.Persistence;
+namespace MatdarSathi.API.Infrastructure.Persistence;
 
 public class ApplicationDbContext : DbContext, IApplicationDbContext
 {

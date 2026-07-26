@@ -6,13 +6,13 @@ using Asp.Versioning;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MatdanSathi.API.Application.Common.Interfaces;
+using MatdarSathi.API.Application.Common.Interfaces;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.RateLimiting;
-using MatdanSathi.API.Application.Visits.Commands.ScheduleBloVisit;
+using MatdarSathi.API.Application.Visits.Commands.ScheduleBloVisit;
 
-namespace MatdanSathi.API.Controllers.v1;
+namespace MatdarSathi.API.Controllers.v1;
 
 [ApiController]
 [ApiVersion("1.0")]

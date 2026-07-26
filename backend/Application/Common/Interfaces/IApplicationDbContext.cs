@@ -1,9 +1,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using MatdanSathi.API.Domain.Entities;
+using MatdarSathi.API.Domain.Entities;
 
-namespace MatdanSathi.API.Application.Common.Interfaces;
+namespace MatdarSathi.API.Application.Common.Interfaces;
 
 public interface IApplicationDbContext
 {

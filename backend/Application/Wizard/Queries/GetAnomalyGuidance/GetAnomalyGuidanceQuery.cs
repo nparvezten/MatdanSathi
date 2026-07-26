@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MatdanSathi.API.Application.Common.Interfaces;
-using MatdanSathi.API.Application.Wizard.Models;
+using MatdarSathi.API.Application.Common.Interfaces;
+using MatdarSathi.API.Application.Wizard.Models;
 
-namespace MatdanSathi.API.Application.Wizard.Queries.GetAnomalyGuidance;
+namespace MatdarSathi.API.Application.Wizard.Queries.GetAnomalyGuidance;
 
 public record GetAnomalyGuidanceQuery(
     int Age,

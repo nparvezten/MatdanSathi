@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.matdansathi.app',
-  appName: 'MatdanSathi',
+  appId: 'com.matdarsathi.app',
+  appName: 'MatdarSathi',
   webDir: 'dist/frontend/browser'
 };
 

@@ -1,17 +1,17 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Asp.Versioning;
-using MatdanSathi.API.Application.Common.Interfaces;
-using MatdanSathi.API.Application.Wizard.Commands.GenerateHearingDossier;
-using MatdanSathi.API.Application.Wizard.Models;
-using MatdanSathi.API.Application.Wizard.Queries.GetAnomalyGuidance;
-using MatdanSathi.API.Application.Wizard.Queries.GetAnomalyRules;
+using MatdarSathi.API.Application.Common.Interfaces;
+using MatdarSathi.API.Application.Wizard.Commands.GenerateHearingDossier;
+using MatdarSathi.API.Application.Wizard.Models;
+using MatdarSathi.API.Application.Wizard.Queries.GetAnomalyGuidance;
+using MatdarSathi.API.Application.Wizard.Queries.GetAnomalyRules;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 
-namespace MatdanSathi.API.Controllers.v1;
+namespace MatdarSathi.API.Controllers.v1;
 
 [ApiController]
 [ApiVersion("1.0")]

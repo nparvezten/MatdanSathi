@@ -1,12 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MatdanSathi.API.Application.Common.Interfaces;
-using MatdanSathi.API.Infrastructure.Persistence;
-using MatdanSathi.API.Infrastructure.Security;
-using MatdanSathi.API.Infrastructure.Common;
+using MatdarSathi.API.Application.Common.Interfaces;
+using MatdarSathi.API.Infrastructure.Persistence;
+using MatdarSathi.API.Infrastructure.Security;
+using MatdarSathi.API.Infrastructure.Common;
 
-namespace MatdanSathi.API.Infrastructure;
+namespace MatdarSathi.API.Infrastructure;
 
 public static class DependencyInjection
 {

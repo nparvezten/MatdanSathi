@@ -1,8 +1,8 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
-using MatdanSathi.API.Domain.Common;
+using MatdarSathi.API.Domain.Common;
 
-namespace MatdanSathi.API.Domain.Entities;
+namespace MatdarSathi.API.Domain.Entities;
 
 public class VisitSlip : BaseEntity
 {

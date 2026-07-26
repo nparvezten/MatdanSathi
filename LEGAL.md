@@ -1,7 +1,7 @@
 # Legal Disclaimers & Compliance Policy
 
 ## 1. Non-Affiliation & Official Data Source Statement
-MatdanSathi is an independent, community-driven open-source initiative. **It is not affiliated, associated, authorized, endorsed by, or in any way officially connected with the Election Commission of India (ECI), the Chief Electoral Officer (CEO) of Maharashtra, or any government agency.** 
+MatdarSathi is an independent, community-driven open-source initiative. **It is not affiliated, associated, authorized, endorsed by, or in any way officially connected with the Election Commission of India (ECI), the Chief Electoral Officer (CEO) of Maharashtra, or any government agency.** 
 
 All official voter information, forms, and registrations must be completed directly through the government's authorized portals (e.g., voterportal.eci.gov.in).
 

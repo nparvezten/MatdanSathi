@@ -45,7 +45,7 @@ export class AppComponent implements OnInit {
     const savedEmail = localStorage.getItem('verifier_email');
     if (token) {
       this.isAuthenticated.set(true);
-      this.verifierEmail.set(savedEmail || 'verifier@matdansathi.org');
+      this.verifierEmail.set(savedEmail || 'verifier@matdarsathi.org');
     }
   }
 
@@ -158,7 +158,7 @@ export class AppComponent implements OnInit {
     const cleanPass = this.password.trim();
 
     // Local Seed Sandbox verifier check for seamless testing
-    if (cleanEmail === 'verifier@matdansathi.org' && cleanPass === 'SecurePassword123!') {
+    if (cleanEmail === 'verifier@matdarsathi.org' && cleanPass === 'SecurePassword123!') {
       const mockToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InZlcmlmaWVyQG1hdGRhbnNhdGhpLm9yZyIsInJvbGUiOiJWZXJpZmllciJ9.mock';
       localStorage.setItem('auth_token', mockToken);
       localStorage.setItem('verifier_email', cleanEmail);

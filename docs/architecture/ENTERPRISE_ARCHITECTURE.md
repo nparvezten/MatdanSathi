@@ -7,7 +7,7 @@
 ### ADR-001: Selection of Native C# Mediator over External MediatR Library
 *   **Status**: Accepted
 *   **Date**: 2026-07-26
-*   **Context**: MediatR v13+ moved to a commercial dual-license model. To comply with strict open-source mandates and ensure MatdanSathi can be freely hosted, modified, and redistributed by public civic volunteers without licensing fees, external MediatR dependencies had to be eliminated.
+*   **Context**: MediatR v13+ moved to a commercial dual-license model. To comply with strict open-source mandates and ensure MatdarSathi can be freely hosted, modified, and redistributed by public civic volunteers without licensing fees, external MediatR dependencies had to be eliminated.
 *   **Decision**: Implement a native C# `IMediator` pattern in the Application layer using reflection-based assembly scanning (`services.AddScoped(interface, implementation)`).
 *   **Consequences**: 
     *   Zero reliance on commercial NuGet packages (100% MIT-licensed codebase).
@@ -53,7 +53,7 @@
 ## 2. C4 Model Diagrams
 
 ### Level 1: System Context Diagram
-High-level view showing users and external systems interacting with MatdanSathi.
+High-level view showing users and external systems interacting with MatdarSathi.
 
 ```mermaid
 graph TD
@@ -64,15 +64,15 @@ graph TD
     Citizen["👤 Voter / Citizen<br/>(Checks roll status, surname discrepancies)"]:::citizenFill
     Volunteer["🧑‍💼 Community Volunteer<br/>(Logs BLO notice slips, field verification)"]:::citizenFill
 
-    MatdanSathi["🏛️ MatdanSathi Civic Suite<br/>(Privacy-first voter companion, SIR wizard, map locator)"]:::sysFill
+    MatdarSathi["🏛️ MatdarSathi Civic Suite<br/>(Privacy-first voter companion, SIR wizard, map locator)"]:::sysFill
 
     ECIPortal["🌐 ECI Voters Service Portal<br/>(voters.eci.gov.in)"]:::extFill
     OpenStreetMap["🗺️ OpenStreetMap / Leaflet<br/>(Neutral booth tile map)"]:::extFill
 
-    Citizen -->|"1. Searches voter status & generates AERO dossiers"| MatdanSathi
-    Volunteer -->|"2. Schedules BLO visit slips & verifies booth records"| MatdanSathi
-    MatdanSathi -->|"3. Directs pre-filled Form 6/7/8 submissions"| ECIPortal
-    MatdanSathi -->|"4. Fetches neutral booth location tiles"| OpenStreetMap
+    Citizen -->|"1. Searches voter status & generates AERO dossiers"| MatdarSathi
+    Volunteer -->|"2. Schedules BLO visit slips & verifies booth records"| MatdarSathi
+    MatdarSathi -->|"3. Directs pre-filled Form 6/7/8 submissions"| ECIPortal
+    MatdarSathi -->|"4. Fetches neutral booth location tiles"| OpenStreetMap
 ```
 
 ---
@@ -219,7 +219,7 @@ sequenceDiagram
     participant Auth as AuthController
     participant Config as App Settings / Secrets
 
-    Volunteer->>SPA: Enters credentials (verifier@matdansathi.org)
+    Volunteer->>SPA: Enters credentials (verifier@matdarsathi.org)
     SPA->>Auth: POST /api/v1/auth/login { email, password }
     Auth->>Config: Validate verifier credentials & get JWT Secret Key
     Config-->>Auth: Secret Key ("super-secret-secure-key...")

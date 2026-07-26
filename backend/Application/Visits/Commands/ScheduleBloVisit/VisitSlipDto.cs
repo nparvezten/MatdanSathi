@@ -1,6 +1,6 @@
 using System;
 
-namespace MatdanSathi.API.Application.Visits.Commands.ScheduleBloVisit;
+namespace MatdarSathi.API.Application.Visits.Commands.ScheduleBloVisit;
 
 public record VisitSlipDto
 {

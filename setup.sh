@@ -16,7 +16,7 @@ echo -e "${CYAN}====================================================${NC}"
 # 1. Check .NET SDK & Build C# API
 echo -e "\n${YELLOW}[1/3] Checking .NET SDK & Building C# API Solution...${NC}"
 if command -v dotnet &> /dev/null; then
-    dotnet build backend/MatdanSathi.sln
+    dotnet build backend/MatdarSathi.sln
     echo -e "${GREEN}✔ .NET API Solution built successfully!${NC}"
 else
     echo -e "${YELLOW}⚠️ .NET SDK not detected. Please install .NET 9.0/10 SDK from https://dotnet.microsoft.com/${NC}"

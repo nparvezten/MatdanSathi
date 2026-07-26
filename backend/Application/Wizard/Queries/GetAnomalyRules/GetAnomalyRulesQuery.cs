@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MatdanSathi.API.Application.Common.Interfaces;
+using MatdarSathi.API.Application.Common.Interfaces;
 
-namespace MatdanSathi.API.Application.Wizard.Queries.GetAnomalyRules;
+namespace MatdarSathi.API.Application.Wizard.Queries.GetAnomalyRules;
 
 public record GetAnomalyRulesQuery(string? AnomalyType = null) : IRequest<List<AnomalyRuleDto>>;
 

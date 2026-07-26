@@ -6,40 +6,40 @@ This walkthrough details our implementation of production-ready security integra
 
 ### 1. Database auto-migrations and Seeding
 - Generated Entity Framework Core migrations inside the Infrastructure layer: **`Persistence/Migrations/`**.
-- Created **[DbInitializer.cs](file:///Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Infrastructure/Persistence/DbInitializer.cs)** which seeds:
+- Created **[DbInitializer.cs](file:///Users/parvezkhan/Projects/AntigravityProjects/MatdarSathi/backend/Infrastructure/Persistence/DbInitializer.cs)** which seeds:
   - Coordinate maps for 3 polling stations in Maharashtra.
   - 3 baseline voter profiles, including:
     - **Saraswati Khan** (Grandmother, EPIC: `SLD1234567`, House: `42-A/1`, Section-1).
     - **Ramesh Sawant** (EPIC: `SLD9876543`, House: `42-A/2`, Section-1).
     - **Deepa Joshi** (EPIC: `SLD2345678`, House: `43`, Section-1).
-- Updated **[Program.cs](file:///Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/API/Program.cs)** to execute database migrations and seed sample values automatically during startup.
+- Updated **[Program.cs](file:///Users/parvezkhan/Projects/AntigravityProjects/MatdarSathi/backend/API/Program.cs)** to execute database migrations and seed sample values automatically during startup.
 
 ### 2. Capacitor Geolocation Integration
 - Installed `@capacitor/geolocation` inside the frontend workspace.
-- Modified **[blo-map.component.ts](file:///Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/frontend/src/app/components/blo-map/blo-map.component.ts)** to fetch the device's coordinates via Capacitor Geolocation, automatically falling back to standard HTML5 Web Geolocation when running in standard desktop web browsers.
+- Modified **[blo-map.component.ts](file:///Users/parvezkhan/Projects/AntigravityProjects/MatdarSathi/frontend/src/app/components/blo-map/blo-map.component.ts)** to fetch the device's coordinates via Capacitor Geolocation, automatically falling back to standard HTML5 Web Geolocation when running in standard desktop web browsers.
 
 ### 3. JWT Authentication & Security
 - Added Microsoft JwtBearer Authentication validation into the API container.
-- Implemented **[AuthController.cs](file:///Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/API/Controllers/v1/AuthController.cs)** exposing the `/api/v1/auth/login` endpoint for community verifiers.
+- Implemented **[AuthController.cs](file:///Users/parvezkhan/Projects/AntigravityProjects/MatdarSathi/backend/API/Controllers/v1/AuthController.cs)** exposing the `/api/v1/auth/login` endpoint for community verifiers.
 - Secured `/api/v1/voters/check` and `/api/v1/blo/lookup` using `[Authorize]` JWT filters.
 
 ### 4. Module A: Deletions & Transfers Watchdog
-- Implemented **[WatchdogController.cs](file:///Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/API/Controllers/v1/WatchdogController.cs)** which performs comparative matching:
+- Implemented **[WatchdogController.cs](file:///Users/parvezkhan/Projects/AntigravityProjects/MatdarSathi/backend/API/Controllers/v1/WatchdogController.cs)** which performs comparative matching:
   - Match is executed using deterministic blind indexes (`HMAC-SHA256`) to ensure PII remains secure and un-decrypted.
   - Flags **Deletions** (missing voters in new parsed roll, such as when your grandmother's record is omitted).
   - Flags **Section Transfers** (detects when section numbers change, e.g. Ramesh Sawant).
   - Flags **Address Changes** (detects when house numbers change, e.g. Deepa Joshi).
-- Wrote **[WatchdogTests.cs](file:///Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/Tests/WatchdogTests.cs)** verifying correct identification of deletions, transfers, and address changes.
+- Wrote **[WatchdogTests.cs](file:///Users/parvezkhan/Projects/AntigravityProjects/MatdarSathi/backend/Tests/WatchdogTests.cs)** verifying correct identification of deletions, transfers, and address changes.
 
 ### 5. Module C: Form-8 Helper
-- Updated **[form-wizard.component.ts](file:///Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/frontend/src/app/components/form-wizard/form-wizard.component.ts)** to construct a pre-filled direct redirect link to ECI Voters Service Portal (`https://voters.eci.gov.in/`).
+- Updated **[form-wizard.component.ts](file:///Users/parvezkhan/Projects/AntigravityProjects/MatdarSathi/frontend/src/app/components/form-wizard/form-wizard.component.ts)** to construct a pre-filled direct redirect link to ECI Voters Service Portal (`https://voters.eci.gov.in/`).
 - Integrated a printing function trigger (`window.print()`) on Step 4 and the Success Step to generate correction summaries.
 
 ### 6. Production Containerization
-- **[docker-compose.yml](file:///Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/docker-compose.yml)**: Created root orchestrator containing PostgreSQL db, C# API, Python FastAPI microservice, and Angular UI.
-- **[backend/API/Dockerfile](file:///Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/backend/API/Dockerfile)**: Multi-stage compile and execution setup for C# container.
-- **[frontend/Dockerfile](file:///Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/frontend/Dockerfile)**: Dockerfile serving Angular client pages via Nginx.
-- **[frontend/nginx.conf](file:///Users/parvezkhan/Projects/AntigravityProjects/MatdanSathi/frontend/nginx.conf)**: Nginx rules ensuring client routes resolve to `index.html` and proxying API endpoints.
+- **[docker-compose.yml](file:///Users/parvezkhan/Projects/AntigravityProjects/MatdarSathi/docker-compose.yml)**: Created root orchestrator containing PostgreSQL db, C# API, Python FastAPI microservice, and Angular UI.
+- **[backend/API/Dockerfile](file:///Users/parvezkhan/Projects/AntigravityProjects/MatdarSathi/backend/API/Dockerfile)**: Multi-stage compile and execution setup for C# container.
+- **[frontend/Dockerfile](file:///Users/parvezkhan/Projects/AntigravityProjects/MatdarSathi/frontend/Dockerfile)**: Dockerfile serving Angular client pages via Nginx.
+- **[frontend/nginx.conf](file:///Users/parvezkhan/Projects/AntigravityProjects/MatdarSathi/frontend/nginx.conf)**: Nginx rules ensuring client routes resolve to `index.html` and proxying API endpoints.
 
 ---
 
@@ -47,7 +47,7 @@ This walkthrough details our implementation of production-ready security integra
 Executed `./run-pipeline.sh` successfully:
 ```text
 ====================================================
-      MatdanSathi Ingestion & Secure Build Pipeline   
+      MatdarSathi Ingestion & Secure Build Pipeline   
 ====================================================
 [1/4] Restoring and Building C# .NET API Layer...
 Build succeeded (0 warnings, 0 errors)

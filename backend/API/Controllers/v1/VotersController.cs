@@ -1,14 +1,14 @@
 using System.Threading.Tasks;
 using Asp.Versioning;
-using MatdanSathi.API.Application.Common.Interfaces;
+using MatdarSathi.API.Application.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MatdanSathi.API.Application.Voters.Queries.CheckVoterRegistration;
+using MatdarSathi.API.Application.Voters.Queries.CheckVoterRegistration;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.RateLimiting;
 
-namespace MatdanSathi.API.Controllers.v1;
+namespace MatdarSathi.API.Controllers.v1;
 
 [ApiController]
 [ApiVersion("1.0")]

@@ -1,4 +1,4 @@
-# Architecture Decision Records (ADRs) & System Design for MatdanSathi
+# Architecture Decision Records (ADRs) & System Design for MatdarSathi
 
 ## 📌 Index of Architecture Decision Records
 
@@ -14,7 +14,7 @@
 ### ADR-001: Native MIT C# Mediator CQRS Pattern
 
 *   **Status**: Accepted
-*   **Context**: MediatR v13+ moved to a paid dual-license model. To guarantee that MatdanSathi remains 100% open-source, permissive (MIT/Apache 2.0), and cost-free for public civic deployment, all commercial OR dual-licensed packages must be eliminated.
+*   **Context**: MediatR v13+ moved to a paid dual-license model. To guarantee that MatdarSathi remains 100% open-source, permissive (MIT/Apache 2.0), and cost-free for public civic deployment, all commercial OR dual-licensed packages must be eliminated.
 *   **Decision**: Implement a zero-dependency, native C# `IMediator`, `IRequest<TResponse>`, and `IRequestHandler<TRequest, TResponse>` pattern. Handlers are registered via assembly reflection scan (`services.AddScoped(interface, implementation)`) and executed dynamically via `NativeMediator`.
 *   **Consequences**: Eliminates legal licensing risks, reduces runtime memory footprint, eliminates external package bloat, and preserves 100% MediatR CQRS decoupling semantics.
 
@@ -53,25 +53,25 @@
 
 ```mermaid
 C4Context
-    title Level 1: System Context Diagram for MatdanSathi
+    title Level 1: System Context Diagram for MatdarSathi
 
     Person(citizen, "Voter / Citizen", "Searches roll status, checks deletions/transfers, and finds prescribed SIR proof documents.")
     Person(volunteer, "Community Volunteer", "Logs physical BLO notice slips, generates AERO hearing dossiers, and conducts field verification.")
 
-    System(matdansathi, "MatdanSathi Suite", "Privacy-first voter companion suite providing roll verification, anomaly guidance, and BLO locator services.")
+    System(matdarsathi, "MatdarSathi Suite", "Privacy-first voter companion suite providing roll verification, anomaly guidance, and BLO locator services.")
 
     System_Ext(eci, "ECI Voters Service Portal", "Official Election Commission of India Portal (voters.eci.gov.in) for Form 6/7/8 submissions.")
     System_Ext(maps, "OpenStreetMap / Leaflet", "Tile servers for rendering neutral government booth facility locations.")
 
-    Rel(citizen, matdansathi, "Searches voter roll & generates SIR hearing dossiers", "HTTPS / Angular PWA")
-    Rel(volunteer, matdansathi, "Logs BLO visit notice slips & verifies booth records", "HTTPS / Capacitor Mobile")
-    Rel(matdansathi, eci, "Generates pre-filled direct application links", "HTTPS Redirect")
-    Rel(matdansathi, maps, "Fetches neutral booth map tiles", "HTTPS / OpenStreetMap API")
+    Rel(citizen, matdarsathi, "Searches voter roll & generates SIR hearing dossiers", "HTTPS / Angular PWA")
+    Rel(volunteer, matdarsathi, "Logs BLO visit notice slips & verifies booth records", "HTTPS / Capacitor Mobile")
+    Rel(matdarsathi, eci, "Generates pre-filled direct application links", "HTTPS Redirect")
+    Rel(matdarsathi, maps, "Fetches neutral booth map tiles", "HTTPS / OpenStreetMap API")
 ```
 
 ```mermaid
 C4Container
-    title Level 2: Container Diagram for MatdanSathi
+    title Level 2: Container Diagram for MatdarSathi
 
     Person(user, "User (Citizen / Volunteer)", "Accesses suite via Web Browser, PWA, or Native Mobile App")
 

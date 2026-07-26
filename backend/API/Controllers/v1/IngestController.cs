@@ -5,10 +5,10 @@ using Asp.Versioning;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using MatdanSathi.API.Application.Common.Interfaces;
-using MatdanSathi.API.Domain.Entities;
+using MatdarSathi.API.Application.Common.Interfaces;
+using MatdarSathi.API.Domain.Entities;
 
-namespace MatdanSathi.API.Controllers.v1;
+namespace MatdarSathi.API.Controllers.v1;
 
 [ApiController]
 [ApiVersion("1.0")]
@@ -23,7 +23,7 @@ public class IngestController : ControllerBase
         _context = context;
         // Fetch internal token for service-to-service validation
         _expectedApiKey = configuration["CryptographySettings:BlindIndexSalt"]
-                          ?? "matdansathi-secure-internal-token-2026";
+                          ?? "matdarsathi-secure-internal-token-2026";
     }
 
     [HttpPost("voters")]

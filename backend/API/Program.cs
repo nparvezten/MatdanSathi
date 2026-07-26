@@ -2,10 +2,10 @@ using System;
 using System.Text;
 using Asp.Versioning;
 using Serilog;
-using MatdanSathi.API.Application;
-using MatdanSathi.API.Infrastructure;
-using MatdanSathi.API.Infrastructure.Persistence;
-using MatdanSathi.API.Middleware;
+using MatdarSathi.API.Application;
+using MatdarSathi.API.Infrastructure;
+using MatdarSathi.API.Infrastructure.Persistence;
+using MatdarSathi.API.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.RateLimiting;
-using MatdanSathi.API.Application.Common.Interfaces;
+using MatdarSathi.API.Application.Common.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,7 +29,7 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
 
 try
 {
-    Log.Information("Starting MatdanSathi backend API bootstrap...");
+    Log.Information("Starting MatdarSathi backend API bootstrap...");
 
     // 2. Add Layer-Specific Services
     builder.Services.AddApplicationServices();
@@ -39,7 +39,7 @@ try
     builder.Services.AddControllers();
 
     // 4. Configure JWT Authentication
-    var jwtSecret = builder.Configuration["JwtSettings:Secret"] ?? "super-secret-secure-key-for-matdansathi-jwt-validation-2026-auth";
+    var jwtSecret = builder.Configuration["JwtSettings:Secret"] ?? "super-secret-secure-key-for-matdarsathi-jwt-validation-2026-auth";
     var key = Encoding.ASCII.GetBytes(jwtSecret);
 
     builder.Services.AddAuthentication(options =>
@@ -56,9 +56,9 @@ try
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(key),
             ValidateIssuer = true,
-            ValidIssuer = builder.Configuration["JwtSettings:Issuer"] ?? "MatdanSathiAPI",
+            ValidIssuer = builder.Configuration["JwtSettings:Issuer"] ?? "MatdarSathiAPI",
             ValidateAudience = true,
-            ValidAudience = builder.Configuration["JwtSettings:Audience"] ?? "MatdanSathiClient",
+            ValidAudience = builder.Configuration["JwtSettings:Audience"] ?? "MatdarSathiClient",
             ValidateLifetime = true,
             ClockSkew = TimeSpan.Zero
         };
@@ -144,7 +144,7 @@ try
 }
 catch (Exception ex)
 {
-    Log.Fatal(ex, "MatdanSathi host terminated unexpectedly during bootstrap.");
+    Log.Fatal(ex, "MatdarSathi host terminated unexpectedly during bootstrap.");
 }
 finally
 {

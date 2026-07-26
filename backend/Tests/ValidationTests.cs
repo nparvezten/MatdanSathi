@@ -1,8 +1,8 @@
 using FluentValidation.Results;
-using MatdanSathi.API.Application.Voters.Queries.CheckVoterRegistration;
+using MatdarSathi.API.Application.Voters.Queries.CheckVoterRegistration;
 using Xunit;
 
-namespace MatdanSathi.API.Tests;
+namespace MatdarSathi.API.Tests;
 
 public class ValidationTests
 {

@@ -4,13 +4,13 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using MatdanSathi.API.Controllers.v1;
-using MatdanSathi.API.Domain.Entities;
-using MatdanSathi.API.Infrastructure.Persistence;
-using MatdanSathi.API.Infrastructure.Security;
+using MatdarSathi.API.Controllers.v1;
+using MatdarSathi.API.Domain.Entities;
+using MatdarSathi.API.Infrastructure.Persistence;
+using MatdarSathi.API.Infrastructure.Security;
 using Xunit;
 
-namespace MatdanSathi.API.Tests;
+namespace MatdarSathi.API.Tests;
 
 public class WatchdogTests
 {

@@ -6,7 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace MatdanSathi.API.Controllers.v1;
+namespace MatdarSathi.API.Controllers.v1;
 
 [ApiController]
 [Route("api/v1/[controller]")]
@@ -23,10 +23,10 @@ public class AuthController : ControllerBase
     public IActionResult Login([FromBody] LoginRequest request)
     {
         // Simple mock authentication for community verifier volunteers
-        if (request.Email == "verifier@matdansathi.org" && request.Password == "SecurePassword123!")
+        if (request.Email == "verifier@matdarsathi.org" && request.Password == "SecurePassword123!")
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var jwtSecret = _configuration["JwtSettings:Secret"] ?? "super-secret-secure-key-for-matdansathi-jwt-validation-2026-auth";
+            var jwtSecret = _configuration["JwtSettings:Secret"] ?? "super-secret-secure-key-for-matdarsathi-jwt-validation-2026-auth";
             var key = Encoding.ASCII.GetBytes(jwtSecret);
 
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -37,8 +37,8 @@ public class AuthController : ControllerBase
                     new Claim(ClaimTypes.Role, "Verifier")
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(double.Parse(_configuration["JwtSettings:ExpiryMinutes"] ?? "120")),
-                Issuer = _configuration["JwtSettings:Issuer"] ?? "MatdanSathiAPI",
-                Audience = _configuration["JwtSettings:Audience"] ?? "MatdanSathiClient",
+                Issuer = _configuration["JwtSettings:Issuer"] ?? "MatdarSathiAPI",
+                Audience = _configuration["JwtSettings:Audience"] ?? "MatdarSathiClient",
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 

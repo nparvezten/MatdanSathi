@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace MatdanSathi.API.Middleware;
+namespace MatdarSathi.API.Middleware;
 
 public class GlobalExceptionHandler : IExceptionHandler
 {

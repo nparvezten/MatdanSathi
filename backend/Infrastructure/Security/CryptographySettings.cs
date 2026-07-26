@@ -1,4 +1,4 @@
-namespace MatdanSathi.API.Infrastructure.Security;
+namespace MatdarSathi.API.Infrastructure.Security;
 
 public class CryptographySettings
 {

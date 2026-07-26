@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\Application\MatdanSathi.API.Application.csproj" />
+    <ProjectReference Include="..\Application\MatdarSathi.API.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>

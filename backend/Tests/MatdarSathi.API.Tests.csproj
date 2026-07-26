@@ -20,9 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Infrastructure\MatdanSathi.API.Infrastructure.csproj" />
-    <ProjectReference Include="..\Application\MatdanSathi.API.Application.csproj" />
-    <ProjectReference Include="..\API\MatdanSathi.API.csproj" />
+    <ProjectReference Include="..\Infrastructure\MatdarSathi.API.Infrastructure.csproj" />
+    <ProjectReference Include="..\Application\MatdarSathi.API.Application.csproj" />
+    <ProjectReference Include="..\API\MatdarSathi.API.csproj" />
   </ItemGroup>
 
 </Project>

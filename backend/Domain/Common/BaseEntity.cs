@@ -1,6 +1,6 @@
 using System;
 
-namespace MatdanSathi.API.Domain.Common;
+namespace MatdarSathi.API.Domain.Common;
 
 public abstract class BaseEntity
 {

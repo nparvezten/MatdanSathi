@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace MatdanSathi.API.Application.Wizard.Models;
+namespace MatdarSathi.API.Application.Wizard.Models;
 
 public enum AnomalyType
 {
