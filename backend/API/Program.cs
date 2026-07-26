@@ -35,8 +35,18 @@ try
     builder.Services.AddApplicationServices();
     builder.Services.AddInfrastructureServices(builder.Configuration);
 
-    // 3. Add Controllers and Web API Services
+    // 3. Add Controllers, CORS, and Web API Services
     builder.Services.AddControllers();
+
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowAll", policy =>
+        {
+            policy.AllowAnyOrigin()
+                  .AllowAnyMethod()
+                  .AllowAnyHeader();
+        });
+    });
 
     // 4. Configure JWT Authentication
     var jwtSecret = builder.Configuration["JwtSettings:Secret"] ?? "super-secret-secure-key-for-matdarsathi-jwt-validation-2026-auth";
@@ -131,6 +141,7 @@ try
     }
 
     app.UseSerilogRequestLogging();
+    app.UseCors("AllowAll");
     app.UseHttpsRedirection();
 
     app.UseRateLimiter();
