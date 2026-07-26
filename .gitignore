@@ -1,0 +1,52 @@
+# ==========================================
+# MatdanSathi Standard .gitignore
+# ==========================================
+
+# 1. C# .NET Build Outputs
+**/bin/
+**/obj/
+**/*.dll
+**/*.pdb
+**/*.exe
+**/*.user
+**/*.userosscache
+**/*.sln.docstates
+.vs/
+*.user
+
+# 2. Node.js & Angular Frontend Build Outputs
+**/node_modules/
+**/dist/
+**/.angular/
+**/coverage/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# 3. Python Virtual Environments & Bytecode
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+**/.venv/
+**/venv/
+.pytest_cache/
+.coverage
+htmlcov/
+.bandit
+
+# 4. OS & IDE System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.idea/
+.vscode/
+
+# 5. Output PDFs and Temporary Assets
+**/*.pdf
+**/*.log
