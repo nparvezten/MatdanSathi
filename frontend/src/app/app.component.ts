@@ -12,7 +12,7 @@ import { BloMapComponent } from './components/blo-map/blo-map.component';
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
-  title = 'MatdanSathi Dashboard';
+  title = 'MatdarSathi (मतदार साथी) Dashboard';
   activeTab = signal<'public' | 'volunteer'>('public');
   isAuthenticated = signal<boolean>(false);
   email = '';

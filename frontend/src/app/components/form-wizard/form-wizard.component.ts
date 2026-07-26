@@ -13,7 +13,7 @@ import { FormsModule } from '@angular/forms';
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div>
             <h2 class="text-xl font-semibold text-white tracking-wide">Voter Services & SIR Hearing Portal</h2>
-            <p class="text-xs text-slate-400 mt-1">Electoral Roll Companion & AERO Dossier Generator (MatdanSathi)</p>
+            <p class="text-xs text-slate-400 mt-1">Electoral Roll Companion & AERO Dossier Generator (MatdarSathi - मतदार साथी)</p>
           </div>
           <!-- Mode switcher buttons -->
           <div class="flex flex-wrap bg-slate-950 p-1 rounded-lg border border-slate-800 gap-1">

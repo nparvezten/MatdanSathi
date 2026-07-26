@@ -1,6 +1,6 @@
-# MatdanSathi (मतदान साथी) — Voter Companion Suite
+# MatdarSathi (मतदार साथी) — Voter Companion Suite
 
-MatdanSathi is an open-source, privacy-first civic utility application built to empower volunteers and citizens during electoral roll verification drives (such as India's Special Intensive Revision - SIR). It enables voters and grass-roots volunteers to search local rolls, detect unexpected deletions/transfers, locate nearby Booth Level Officers (BLOs), decode legacy voter IDs, and prepare Form 6, 7, and 8 applications without compromising individual personal data privacy.
+MatdarSathi is an open-source, privacy-first civic utility application built to empower volunteers and citizens during electoral roll verification drives (such as India's Special Intensive Revision - SIR). It enables voters and grass-roots volunteers to search local rolls, detect unexpected deletions/transfers, locate nearby Booth Level Officers (BLOs), decode legacy voter IDs, and prepare Form 6, 7, and 8 applications without compromising individual personal data privacy.
 
 ---
 
@@ -9,8 +9,8 @@ MatdanSathi is an open-source, privacy-first civic utility application built to 
 The codebase is organized into four decoupled layers:
 
 *   `frontend/`: **Angular 17+ Standalone Application** using Signals, RxJS, and TailwindCSS. Includes PWA capabilities and Capacitor wrappers for iOS (WKWebView) and Android (WebView) native deployment.
-*   `backend/`: **C# ASP.NET Core 9/10 Web API** following Clean Architecture, CQRS pattern via MediatR, FluentValidation, Serilog, rate-limiting middlewares, and PostgreSQL persistence.
-*   `parser-service/`: **Python 3.11+ FastAPI Microservice** using PyMuPDF (`fitz`) for secure, streaming extraction of electoral roll PDF documents.
+*   `backend/`: **C# ASP.NET Core 9/10 Web API** following Clean Architecture, Native MIT CQRS pattern, FluentValidation, Serilog, rate-limiting middlewares, and PostgreSQL persistence.
+*   `parser-service/`: **Python 3.11+ FastAPI Microservice** using `pypdf` and `PyMuPDF` (`fitz`) for secure, streaming extraction of electoral roll PDF documents.
 *   `docker-compose.yml`: Full multi-container orchestration for one-command deployment.
 
 ---
@@ -25,8 +25,8 @@ If you have [Docker Desktop](https://www.docker.com/) installed:
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/nparvezten/MatdanSathi.git
-cd MatdanSathi
+git clone https://github.com/nparvezten/MatdarSathi.git
+cd MatdarSathi
 
 # 2. Build and start all services (PostgreSQL, .NET API, Python Parser, Angular Frontend)
 docker compose up --build
