@@ -161,5 +161,38 @@ public static class DbInitializer
             context.VoterProfiles.AddRange(voterProfiles);
             context.SaveChanges();
         }
+
+        // 4. Seed UserVerifiers (Default Super Admin & Volunteer)
+        if (!context.UserVerifiers.Any())
+        {
+            var users = new[]
+            {
+                new UserVerifier
+                {
+                    FullName = "Super Admin Officer",
+                    Email = "admin@matdarsathi.org",
+                    Phone = "9999988888",
+                    AssemblyConstituency = "Constituency-1",
+                    PasswordHash = "AdminPassword123!",
+                    Role = "SuperAdmin",
+                    Status = "Approved",
+                    ApprovedAt = DateTime.UtcNow
+                },
+                new UserVerifier
+                {
+                    FullName = "Approved Field Volunteer",
+                    Email = "verifier@matdarsathi.org",
+                    Phone = "9876543210",
+                    AssemblyConstituency = "Constituency-1",
+                    PasswordHash = "SecurePassword123!",
+                    Role = "Verifier",
+                    Status = "Approved",
+                    ApprovedAt = DateTime.UtcNow
+                }
+            };
+
+            context.UserVerifiers.AddRange(users);
+            context.SaveChanges();
+        }
     }
 }

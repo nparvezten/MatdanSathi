@@ -24,6 +24,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<VerificationLog> VerificationLogs => Set<VerificationLog>();
     public DbSet<BloCoordinateMap> BloCoordinateMaps => Set<BloCoordinateMap>();
     public DbSet<VisitSlip> VisitSlips => Set<VisitSlip>();
+    public DbSet<UserVerifier> UserVerifiers => Set<UserVerifier>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

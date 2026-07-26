@@ -39,7 +39,7 @@
       <!-- User Auth State -->
       <div class="flex items-center space-x-4 text-xs">
         <div *ngIf="isAuthenticated() && activeTab() === 'volunteer'" class="flex items-center space-x-2">
-          <span class="text-slate-400">Volunteer:</span>
+          <span class="text-slate-400">{{ userRole() }}:</span>
           <span class="text-emerald-400 bg-emerald-950/40 border border-emerald-900 px-2 py-0.5 rounded font-mono text-[10px]">{{ verifierEmail() }}</span>
           <button (click)="logout()" class="bg-slate-800 hover:bg-slate-700 text-white text-[10px] font-semibold px-2 py-1 rounded">Logout</button>
         </div>
@@ -113,17 +113,17 @@
         </div>
       </div>
 
-      <!-- Tool 3: English-to-Marathi Transliterator -->
+      <!-- Tool 3: English-to-Marathi Phonetic Transliterator -->
       <div class="bg-slate-900/60 backdrop-blur border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
         <div>
-          <h3 class="text-sm font-bold text-teal-400 uppercase tracking-wide">✍️ English-to-Marathi Name Helper</h3>
+          <h3 class="text-sm font-bold text-teal-400 uppercase tracking-wide">✍️ ENGLISH-TO-MARATHI NAME HELPER</h3>
           <p class="text-xs text-slate-400 mt-1">Electoral rolls are indexed locally in Marathi. Type in English to generate correct phonetic Marathi scripts copy-ready.</p>
         </div>
         <div class="flex space-x-2">
           <input 
             type="text" 
             [(ngModel)]="englishNameInput" 
-            placeholder="e.g. Saidnabi Khan" 
+            placeholder="e.g. Parvez Khan" 
             class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-2 text-white text-xs placeholder:text-slate-650" />
           <button 
             (click)="transliterate()" 
@@ -140,10 +140,10 @@
         </div>
       </div>
 
-      <!-- Tool 4: Volunteer SignUp Request -->
+      <!-- Tool 4: Volunteer Sign Up Request -->
       <div class="bg-slate-900/60 backdrop-blur border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
         <div>
-          <h3 class="text-sm font-bold text-teal-400 uppercase tracking-wide">🤝 Join Voter Drive Drive (Volunteer Sign Up)</h3>
+          <h3 class="text-sm font-bold text-teal-400 uppercase tracking-wide">🤝 JOIN VOTER DRIVE (VOLUNTEER SIGN UP)</h3>
           <p class="text-xs text-slate-400 mt-1">Apply to register as an authenticated verification volunteer in your local constituency.</p>
         </div>
         <div *ngIf="!registrationSuccess()" class="grid grid-cols-2 gap-3">
@@ -151,25 +151,51 @@
           <input type="email" [(ngModel)]="regEmail" placeholder="Email Address" class="bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white" />
           <input type="text" [(ngModel)]="regPhone" placeholder="Mobile Number" class="bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white" />
           <input type="text" [(ngModel)]="regAssembly" placeholder="Assembly constituency" class="bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white" />
+          <input type="password" [(ngModel)]="regPassword" placeholder="Set Password" class="col-span-2 bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white" />
           <button 
             (click)="registerVolunteer()" 
-            [disabled]="!regName || !regEmail || !regPhone"
+            [disabled]="!regName || !regEmail || !regPassword"
             class="col-span-2 bg-teal-600 hover:bg-teal-500 disabled:opacity-40 text-white font-semibold text-xs py-2.5 rounded-xl transition-all">
-            Submit Registration
+            Submit Volunteer Registration
           </button>
         </div>
         <div *ngIf="registrationSuccess()" class="bg-emerald-950/30 border border-emerald-900 text-emerald-400 p-4 rounded-xl text-center space-y-2 animate-scaleIn">
           <h4 class="font-bold text-xs">Application Registered Successfully!</h4>
-          <p class="text-[10px] text-slate-450 leading-relaxed max-w-sm mx-auto">Your details were routed to the Collectorate. Once approved, your login password will be emailed.</p>
+          <p class="text-[10px] text-slate-400 leading-relaxed max-w-sm mx-auto">{{ registrationMessage() }}</p>
           <button (click)="resetRegistration()" class="mt-2 text-teal-400 font-semibold underline text-[10px] block mx-auto">Apply for Another Area</button>
         </div>
       </div>
     </div>
 
-    <!-- RIGHT PANEL: ECI Voter Guides & Resources (5 cols) -->
+    <!-- RIGHT PANEL: ECI Official Links & Helplines (RE-ORDERED TO TOP) -->
     <div class="lg:col-span-5 space-y-6">
       
-      <!-- Alert Banner -->
+      <!-- 1. National Support Helpline 1950 (TOP RIGHT) -->
+      <div class="bg-slate-900/60 border border-slate-800 p-5 rounded-2xl space-y-2 shadow-xl">
+        <span class="text-[10px] text-teal-400 uppercase tracking-wider block font-bold">NATIONAL SUPPORT HELPLINE</span>
+        <div class="text-xl font-mono text-white font-extrabold flex items-center space-x-2">
+          <span>📞 Dial 1950</span>
+        </div>
+        <p class="text-[10px] text-slate-450 leading-relaxed">
+          Toll-free National Voter Helpline for ECI registration support. Remember to add your local STD code before dialing.
+        </p>
+      </div>
+
+      <!-- 2. Official Links Module (TOP RIGHT) -->
+      <div class="bg-slate-900/40 border border-slate-800 rounded-2xl p-5 space-y-3 shadow-xl">
+        <h4 class="text-xs font-bold text-teal-400 uppercase tracking-wider">🔗 ECI OFFICIAL WEB PORTALS</h4>
+        <div class="flex flex-col space-y-2 text-[11px] font-semibold text-teal-400">
+          <a href="https://voters.eci.gov.in/" target="_blank" class="hover:underline">Voter Services Portal (VSP) ➔</a>
+          <a href="https://ceo.maharashtra.gov.in/" target="_blank" class="hover:underline">CEO Maharashtra Portal ➔</a>
+          <a href="https://electoralsearch.eci.gov.in/" target="_blank" class="hover:underline">National Electoral Search ➔</a>
+          <a href="https://eci-citizenservices.eci.nic.in/" target="_blank" class="hover:underline">ECI Grievance Portal ➔</a>
+          <a href="https://ecisveep.nic.in/" target="_blank" class="hover:underline">SVEEP Voter Education Guides ➔</a>
+          <a href="https://play.google.com/store/apps/details?id=in.gov.eci.voterhelpline&hl=en" target="_blank" class="hover:underline text-teal-350">📱 Voter Helpline App (Android) ➔</a>
+          <a href="https://apps.apple.com/in/app/voter-helpline/id1456535004" target="_blank" class="hover:underline text-teal-350">📱 Voter Helpline App (iOS) ➔</a>
+        </div>
+      </div>
+
+      <!-- 3. Alert Banner -->
       <div class="bg-amber-950/20 border border-amber-900 rounded-2xl p-5 space-y-2">
         <div class="flex items-center space-x-1.5 text-amber-400 font-bold text-xs">
           <span>📢 SIR 2026 CUTOFF EXTENDED</span>
@@ -179,9 +205,9 @@
         </p>
       </div>
 
-      <!-- Form Guidelines Tooltips -->
+      <!-- 4. Form Guidelines Tooltips -->
       <div class="bg-slate-900/40 border border-slate-800 rounded-2xl p-5 space-y-3">
-        <h4 class="text-xs font-bold text-teal-400 uppercase tracking-wider">📋 ECI Application Form Guide</h4>
+        <h4 class="text-xs font-bold text-teal-400 uppercase tracking-wider">📋 ECI APPLICATION FORM GUIDE</h4>
         <div class="space-y-3 text-[11px] leading-relaxed text-slate-300">
           <div>
             <strong class="text-white block font-semibold">Form 6: New Voter</strong>
@@ -198,38 +224,14 @@
         </div>
       </div>
 
-      <!-- Compliance Warning -->
+      <!-- 5. Compliance Warning -->
       <div class="bg-rose-950/20 border border-rose-950/60 rounded-2xl p-5 text-xs text-rose-300 space-y-1">
-        <strong class="text-[11px] uppercase block font-bold text-rose-400">⚠️ Dual Registration Warning</strong>
+        <strong class="text-[11px] uppercase block font-bold text-rose-400">⚠️ DUAL REGISTRATION WARNING</strong>
         <p class="leading-relaxed text-[11px]">
           Possessing voter registration in more than one constituency is a punishable offense under Indian Election Laws. File a <strong>Form 7 deletion request</strong> for old addresses before registering in new areas.
         </p>
       </div>
 
-      <!-- Official Links Module -->
-      <div class="bg-slate-900/40 border border-slate-800 rounded-2xl p-5 space-y-3">
-        <h4 class="text-xs font-bold text-teal-400 uppercase tracking-wider">🔗 ECI Official Web Portals</h4>
-        <div class="flex flex-col space-y-2 text-[11px] font-semibold text-teal-400">
-          <a href="https://voters.eci.gov.in/" target="_blank" class="hover:underline">Voter Services Portal (VSP) ➔</a>
-          <a href="https://ceo.maharashtra.gov.in/" target="_blank" class="hover:underline">CEO Maharashtra Portal ➔</a>
-          <a href="https://electoralsearch.eci.gov.in/" target="_blank" class="hover:underline">National Electoral Search ➔</a>
-          <a href="https://eci-citizenservices.eci.nic.in/" target="_blank" class="hover:underline">ECI Grievance Portal ➔</a>
-          <a href="https://ecisveep.nic.in/" target="_blank" class="hover:underline">SVEEP Voter Education Guides ➔</a>
-          <a href="https://play.google.com/store/apps/details?id=in.gov.eci.voterhelpline&hl=en" target="_blank" class="hover:underline text-teal-350">📱 Voter Helpline App (Android) ➔</a>
-          <a href="https://apps.apple.com/in/app/voter-helpline/id1456535004" target="_blank" class="hover:underline text-teal-350">📱 Voter Helpline App (iOS) ➔</a>
-        </div>
-      </div>
-
-      <!-- Official Media Support -->
-      <div class="bg-slate-900/60 border border-slate-800 p-5 rounded-2xl space-y-2">
-        <span class="text-[10px] text-slate-500 uppercase tracking-wider block font-bold">National Support Helpline</span>
-        <div class="text-xl font-mono text-white font-extrabold flex items-center space-x-2">
-          <span>📞 Dial 1950</span>
-        </div>
-        <p class="text-[10px] text-slate-450 leading-relaxed">
-          Toll-free National Voter Helpline for ECI registration support. Remember to add your local STD code before dialing.
-        </p>
-      </div>
     </div>
   </div>
 
@@ -282,34 +284,90 @@
         <!-- Sandbox Hint Card -->
         <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-2xl text-xs space-y-2 mt-6">
           <span class="text-teal-400 font-bold block uppercase tracking-wider text-[10px]">🔑 Seeded Sandbox Logins</span>
-          <div class="text-slate-400 leading-relaxed">
-            To test the verification matching engine, use:
-            <div class="font-mono text-[11px] mt-1 text-slate-300">Email: <span class="text-white">verifier&#64;matdarsathi.org</span></div>
-            <div class="font-mono text-[11px] text-slate-300">Password: <span class="text-white">SecurePassword123!</span></div>
+          <div class="text-slate-400 leading-relaxed space-y-1">
+            <div><span class="text-amber-400 font-bold">Super Admin:</span> admin&#64;matdarsathi.org / <span class="text-white">AdminPassword123!</span></div>
+            <div><span class="text-emerald-400 font-bold">Field Volunteer:</span> verifier&#64;matdarsathi.org / <span class="text-white">SecurePassword123!</span></div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Case B: Logged In (Show Form Wizards and Proximity Map) -->
-    <div *ngIf="isAuthenticated()" class="w-full grid grid-cols-1 lg:grid-cols-2 gap-8 items-start animate-fadeIn">
-      <!-- Project C: Form 8 / Form 7 Wizards & Archives -->
-      <section class="space-y-2">
-        <div class="flex items-center justify-between px-2">
-          <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Verification Wizard Modules</span>
-          <span class="h-2 w-2 rounded-full bg-teal-500 animate-ping"></span>
-        </div>
-        <app-form-wizard></app-form-wizard>
-      </section>
+    <!-- Case B: Logged In (Show Super Admin Console or Volunteer Modules) -->
+    <div *ngIf="isAuthenticated()" class="w-full space-y-8 animate-fadeIn">
 
-      <!-- Project B: BLO Proximity Map Locator -->
-      <section class="space-y-2">
-        <div class="flex items-center justify-between px-2">
-          <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">BLO Proximity Boundary Map</span>
-          <span class="h-2 w-2 rounded-full bg-teal-500"></span>
+      <!-- Super Admin Control Console -->
+      <div *ngIf="userRole() === 'SuperAdmin'" class="bg-slate-900/80 border border-teal-500/30 rounded-3xl p-6 shadow-2xl space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-lg font-bold text-white tracking-wide flex items-center space-x-2">
+              <span>🛡️ Super Admin Control Center</span>
+              <span class="bg-teal-950 text-teal-400 text-[10px] uppercase border border-teal-800 px-2 py-0.5 rounded font-mono">Volunteer Approval Portal</span>
+            </h3>
+            <p class="text-xs text-slate-400 mt-1">Review pending volunteer applications and authorize access to electoral verification tools.</p>
+          </div>
+          <button (click)="fetchPendingVolunteers()" class="bg-slate-800 hover:bg-slate-700 text-xs px-3 py-1.5 rounded-lg text-slate-300">Refresh List</button>
         </div>
-        <app-blo-map></app-blo-map>
-      </section>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-950 text-slate-400 uppercase text-[10px] font-bold">
+              <tr>
+                <th class="p-3">Applicant Name</th>
+                <th class="p-3">Email</th>
+                <th class="p-3">Constituency</th>
+                <th class="p-3">Phone</th>
+                <th class="p-3">Status</th>
+                <th class="p-3 text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/60 text-slate-300">
+              <tr *ngFor="let vol of pendingVolunteers()">
+                <td class="p-3 font-semibold text-white">{{ vol.fullName }}</td>
+                <td class="p-3 font-mono text-teal-400">{{ vol.email }}</td>
+                <td class="p-3">{{ vol.assemblyConstituency }}</td>
+                <td class="p-3">{{ vol.phone }}</td>
+                <td class="p-3">
+                  <span [class.bg-amber-950]="vol.status === 'Pending'" [class.text-amber-400]="vol.status === 'Pending'"
+                        [class.bg-emerald-950]="vol.status === 'Approved'" [class.text-emerald-400]="vol.status === 'Approved'"
+                        [class.bg-rose-950]="vol.status === 'Rejected'" [class.text-rose-400]="vol.status === 'Rejected'"
+                        class="px-2 py-0.5 rounded font-bold text-[10px] uppercase border border-slate-800">
+                    {{ vol.status }}
+                  </span>
+                </td>
+                <td class="p-3 text-right space-x-2">
+                  <button *ngIf="vol.status !== 'Approved'" (click)="approveVolunteer(vol.id)" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1 rounded-lg text-[10px] font-bold">Approve</button>
+                  <button *ngIf="vol.status !== 'Rejected'" (click)="rejectVolunteer(vol.id)" class="bg-rose-600 hover:bg-rose-500 text-white px-3 py-1 rounded-lg text-[10px] font-bold">Reject</button>
+                </td>
+              </tr>
+              <tr *ngIf="pendingVolunteers().length === 0">
+                <td colspan="6" class="p-4 text-center text-slate-500 italic">No volunteer applications found.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Volunteer Modules (Form Wizards & BLO Map) -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+        <!-- Project C: Form 8 / Form 7 Wizards & Archives -->
+        <section class="space-y-2">
+          <div class="flex items-center justify-between px-2">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Verification Wizard Modules</span>
+            <span class="h-2 w-2 rounded-full bg-teal-500 animate-ping"></span>
+          </div>
+          <app-form-wizard></app-form-wizard>
+        </section>
+
+        <!-- Project B: BLO Proximity Map Locator -->
+        <section class="space-y-2">
+          <div class="flex items-center justify-between px-2">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">BLO Proximity Boundary Map</span>
+            <span class="h-2 w-2 rounded-full bg-teal-500"></span>
+          </div>
+          <app-blo-map></app-blo-map>
+        </section>
+      </div>
+
     </div>
 
   </div>

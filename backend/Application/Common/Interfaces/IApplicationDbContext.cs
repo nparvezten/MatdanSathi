@@ -11,6 +11,7 @@ public interface IApplicationDbContext
     DbSet<VerificationLog> VerificationLogs { get; }
     DbSet<BloCoordinateMap> BloCoordinateMaps { get; }
     DbSet<VisitSlip> VisitSlips { get; }
+    DbSet<UserVerifier> UserVerifiers { get; }
 
-    Task<int> SaveChangesAsync(CancellationToken cancellationToken);
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

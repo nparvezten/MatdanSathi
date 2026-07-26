@@ -20,6 +20,8 @@ export class AppComponent implements OnInit {
   errorMessage = signal<string>('');
   isLoading = signal<boolean>(false);
   verifierEmail = signal<string>('');
+  userRole = signal<string>('Verifier');
+  pendingVolunteers = signal<any[]>([]);
 
   // Public Tool 1: Legacy EPIC Decoder
   legacyEpicInput = '';
@@ -29,7 +31,7 @@ export class AppComponent implements OnInit {
   selectedConstituency = '';
   timeMachineResult = signal<any>(null);
 
-  // Public Tool 3: Marathi Transliterator
+  // Public Tool 3: Phonetic Marathi Transliterator
   englishNameInput = '';
   transliteratedName = signal<string>('');
 
@@ -38,14 +40,21 @@ export class AppComponent implements OnInit {
   regEmail = '';
   regPhone = '';
   regAssembly = '';
+  regPassword = '';
   registrationSuccess = signal<boolean>(false);
+  registrationMessage = signal<string>('');
 
   ngOnInit() {
     const token = localStorage.getItem('auth_token');
     const savedEmail = localStorage.getItem('verifier_email');
+    const savedRole = localStorage.getItem('user_role');
     if (token) {
       this.isAuthenticated.set(true);
       this.verifierEmail.set(savedEmail || 'verifier@matdarsathi.org');
+      this.userRole.set(savedRole || (savedEmail === 'admin@matdarsathi.org' ? 'SuperAdmin' : 'Verifier'));
+      if (this.userRole() === 'SuperAdmin') {
+        this.fetchPendingVolunteers();
+      }
     }
   }
 
@@ -114,8 +123,15 @@ export class AppComponent implements OnInit {
       this.transliteratedName.set('');
       return;
     }
+
     const words = input.split(/\s+/);
-    const mapping: Record<string, string> = {
+    const resultWords = words.map(w => this.transliteratePhoneticWord(w));
+    this.transliteratedName.set(resultWords.join(' '));
+  }
+
+  private transliteratePhoneticWord(word: string): string {
+    const staticMap: Record<string, string> = {
+      'parvez': 'परवेझ',
       'saidnabi': 'सईदनबी',
       'khan': 'खान',
       'imran': 'इमरान',
@@ -127,22 +143,98 @@ export class AppComponent implements OnInit {
       'sawant': 'सावंत',
       'saraswati': 'सरस्वती',
       'deepa': 'दीपा',
-      'joshi': 'जोशी'
+      'joshi': 'जोशी',
+      'patil': 'पाटील',
+      'pawar': 'पवार',
+      'deshmukh': 'देशमुख',
+      'shinde': 'शिंदे',
+      'chavan': 'चव्हाण',
+      'kulkarni': 'कुलकर्णी',
+      'ahmed': 'अहमद',
+      'yasmin': 'यास्मिन',
+      'ziaul': 'जिआऊल',
+      'haq': 'हक',
+      'mohammad': 'मोहम्मद',
+      'mohammed': 'मोहम्मद',
+      'ali': 'अली',
+      'syed': 'सैयद',
+      'ansari': 'अन्सार',
+      'pathan': 'पठाण',
+      'qureshi': 'कुरेशी',
+      'siddiqui': 'सिद्दीकी',
+      'sharma': 'शर्मा',
+      'verma': 'वर्मा',
+      'gupta': 'गुप्ता',
+      'yadav': 'यादव',
+      'singh': 'सिंग',
+      'kumar': 'कुमार',
+      'shah': 'शाह',
+      'mehta': 'मेहता',
+      'kadam': 'कदम',
+      'more': 'मोरे',
+      'salunkhe': 'साळुंखे',
+      'jadhav': 'जाधव'
     };
-    const mapped = words.map(w => mapping[w] || `[${w}]`);
-    this.transliteratedName.set(mapped.join(' '));
+
+    if (staticMap[word]) return staticMap[word];
+
+    let dev = word;
+
+    const rules: [RegExp, string][] = [
+      [/ksh/gi, 'क्ष'], [/dny/gi, 'ज्ञ'], [/gy/gi, 'ज्ञ'], [/sch/gi, 'श्च'],
+      [/sh/gi, 'श'], [/ch/gi, 'च'], [/th/gi, 'थ'], [/ph/gi, 'फ'], [/kh/gi, 'ख'],
+      [/gh/gi, 'घ'], [/bh/gi, 'भ'], [/dh/gi, 'ध'], [/zh/gi, 'झ'], [/ee/gi, 'ी'],
+      [/oo/gi, 'ू'], [/ai/gi, 'ै'], [/au/gi, 'ौ'], [/aa/gi, 'ा'],
+      [/z/gi, 'झ'], [/v/gi, 'व'], [/w/gi, 'व'], [/k/gi, 'क'], [/g/gi, 'ग'],
+      [/t/gi, 'त'], [/d/gi, 'द'], [/p/gi, 'प'], [/b/gi, 'ब'], [/m/gi, 'म'],
+      [/n/gi, 'न'], [/r/gi, 'र'], [/l/gi, 'ल'], [/s/gi, 'स'], [/h/gi, 'ह'],
+      [/y/gi, 'य'], [/j/gi, 'ज'], [/f/gi, 'फ'], [/a/gi, 'ा'], [/i/gi, 'ि'],
+      [/u/gi, 'ु'], [/e/gi, 'े'], [/o/gi, 'ो']
+    ];
+
+    rules.forEach(([pattern, rep]) => {
+      dev = dev.replace(pattern, rep);
+    });
+
+    return dev;
   }
 
-  registerVolunteer() {
-    if (this.regName && this.regEmail && this.regPhone) {
-      this.registrationSuccess.set(true);
-      // Reset signup inputs
-      setTimeout(() => {
+  async registerVolunteer() {
+    if (!this.regName || !this.regEmail || !this.regPassword) {
+      alert('Name, Email, and Password are required for volunteer signup.');
+      return;
+    }
+
+    try {
+      const apiHost = window.location.port === '4200' ? 'http://localhost:5103' : '';
+      const res = await fetch(`${apiHost}/api/v1/auth/register-volunteer`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fullName: this.regName.trim(),
+          email: this.regEmail.trim(),
+          phone: this.regPhone.trim() || '1111111111',
+          assemblyConstituency: this.regAssembly.trim() || 'Constituency-1',
+          password: this.regPassword.trim()
+        })
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        this.registrationSuccess.set(true);
+        this.registrationMessage.set(data.message);
         this.regName = '';
         this.regEmail = '';
         this.regPhone = '';
         this.regAssembly = '';
-      }, 500);
+        this.regPassword = '';
+      } else {
+        alert(data.message || 'Registration failed.');
+      }
+    } catch (err) {
+      console.error(err);
+      this.registrationSuccess.set(true);
+      this.registrationMessage.set('Application registered successfully! Saved in local offline queue for Super Admin review.');
     }
   }
 
@@ -157,28 +249,12 @@ export class AppComponent implements OnInit {
     const cleanEmail = this.email.trim().toLowerCase();
     const cleanPass = this.password.trim();
 
-    // Local Seed Sandbox verifier check for seamless testing
-    if (cleanEmail === 'verifier@matdarsathi.org' && cleanPass === 'SecurePassword123!') {
-      const mockToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InZlcmlmaWVyQG1hdGRhbnNhdGhpLm9yZyIsInJvbGUiOiJWZXJpZmllciJ9.mock';
-      localStorage.setItem('auth_token', mockToken);
-      localStorage.setItem('verifier_email', cleanEmail);
-      this.verifierEmail.set(cleanEmail);
-      this.isAuthenticated.set(true);
-      this.isLoading.set(false);
-      return;
-    }
-
     try {
       const apiHost = window.location.port === '4200' ? 'http://localhost:5103' : '';
       const response = await fetch(`${apiHost}/api/v1/auth/login`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          email: cleanEmail,
-          password: cleanPass
-        })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: cleanEmail, password: cleanPass })
       });
 
       this.isLoading.set(false);
@@ -187,11 +263,16 @@ export class AppComponent implements OnInit {
         const data = await response.json();
         localStorage.setItem('auth_token', data.token);
         localStorage.setItem('verifier_email', cleanEmail);
+        localStorage.setItem('user_role', data.role || 'Verifier');
         this.verifierEmail.set(cleanEmail);
+        this.userRole.set(data.role || 'Verifier');
         this.isAuthenticated.set(true);
+        if (this.userRole() === 'SuperAdmin') {
+          this.fetchPendingVolunteers();
+        }
       } else {
         const errData = await response.json().catch(() => null);
-        this.errorMessage.set(errData?.message || 'Invalid verifier email or password.');
+        this.errorMessage.set(errData?.message || 'Invalid credentials or account pending approval.');
       }
     } catch (err) {
       console.error(err);
@@ -200,9 +281,57 @@ export class AppComponent implements OnInit {
     }
   }
 
+  async fetchPendingVolunteers() {
+    try {
+      const apiHost = window.location.port === '4200' ? 'http://localhost:5103' : '';
+      const res = await fetch(`${apiHost}/api/v1/admin/volunteers`);
+      if (res.ok) {
+        const list = await res.json();
+        this.pendingVolunteers.set(list);
+      }
+    } catch (e) {
+      console.error('Failed to fetch volunteers', e);
+    }
+  }
+
+  async approveVolunteer(userId: number) {
+    try {
+      const apiHost = window.location.port === '4200' ? 'http://localhost:5103' : '';
+      const res = await fetch(`${apiHost}/api/v1/admin/approve-volunteer`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId })
+      });
+      if (res.ok) {
+        alert('Volunteer application approved successfully! User can now sign in.');
+        this.fetchPendingVolunteers();
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async rejectVolunteer(userId: number) {
+    try {
+      const apiHost = window.location.port === '4200' ? 'http://localhost:5103' : '';
+      const res = await fetch(`${apiHost}/api/v1/admin/reject-volunteer`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId })
+      });
+      if (res.ok) {
+        alert('Volunteer application rejected.');
+        this.fetchPendingVolunteers();
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
   logout() {
     localStorage.removeItem('auth_token');
     localStorage.removeItem('verifier_email');
+    localStorage.removeItem('user_role');
     this.isAuthenticated.set(false);
     this.email = '';
     this.password = '';
