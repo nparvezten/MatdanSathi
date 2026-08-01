@@ -45,6 +45,10 @@ public static class DependencyInjection
         // 4. Register Native MIT Mediator
         services.AddScoped<IMediator, NativeMediator>();
 
+        // 5. Register Shared Watchdog Comparison Service and Background Roll Ingestion Worker
+        services.AddScoped<IWatchdogComparisonService, MatdarSathi.API.Infrastructure.Services.WatchdogComparisonService>();
+        services.AddHostedService<MatdarSathi.API.Infrastructure.Services.RollIngestionBackgroundService>();
+
         return services;
     }
 }

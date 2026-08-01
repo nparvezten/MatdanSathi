@@ -50,3 +50,4 @@ Thumbs.db
 # 5. Output PDFs and Temporary Assets
 **/*.pdf
 **/*.log
+backend/API/UploadedRolls/

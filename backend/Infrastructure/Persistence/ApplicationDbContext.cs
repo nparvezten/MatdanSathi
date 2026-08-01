@@ -26,10 +26,18 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<VisitSlip> VisitSlips => Set<VisitSlip>();
     public DbSet<UserVerifier> UserVerifiers => Set<UserVerifier>();
     public DbSet<LegacyAnomalyRecord> LegacyAnomalyRecords => Set<LegacyAnomalyRecord>();
+    public DbSet<RollIngestionBatch> RollIngestionBatches => Set<RollIngestionBatch>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<RollIngestionBatch>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasQueryFilter(e => !e.IsDeleted);
+            entity.Property(e => e.RowVersion).IsConcurrencyToken();
+        });
 
         modelBuilder.Entity<VoterProfile>(entity =>
         {

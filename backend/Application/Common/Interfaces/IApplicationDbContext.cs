@@ -13,6 +13,7 @@ public interface IApplicationDbContext
     DbSet<VisitSlip> VisitSlips { get; }
     DbSet<UserVerifier> UserVerifiers { get; }
     DbSet<LegacyAnomalyRecord> LegacyAnomalyRecords { get; }
+    DbSet<RollIngestionBatch> RollIngestionBatches { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

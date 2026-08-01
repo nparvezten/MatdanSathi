@@ -99,3 +99,16 @@ def test_regex_extraction_on_hindi_block():
     gender_match = GENDER_PATTERN.search(text_block)
     assert gender_match is not None
     assert gender_match.group(1).strip() == "पुरुष"
+
+def test_parse_malformed_pdf_fails_gracefully():
+    # Sending corrupted binary content should yield an error payload without crashing
+    headers = {"X-API-KEY": settings.INTERNAL_API_KEY}
+    response = client.post(
+        "/api/v1/parser/parse",
+        headers=headers,
+        files={"file": ("corrupted.pdf", b"%PDF-1.4-corrupted-binary-garbage-bytes", "application/pdf")}
+    )
+    assert response.status_code == 200
+    content = response.text
+    assert "error" in content.lower() or "parsing failed" in content.lower() or content == ""
+

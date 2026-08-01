@@ -28,17 +28,20 @@ def parse_electoral_roll(file_bytes: bytes) -> Generator[Dict[str, Any], None, N
     """
     page_texts = []
 
-    if HAS_PYMUPDF:
-        doc = fitz.open(stream=file_bytes, filetype="pdf")
-        for page_num in range(len(doc)):
-            page_texts.append(doc.load_page(page_num).get_text("text"))
-        doc.close()
-    elif HAS_PYPDF:
-        reader = pypdf.PdfReader(io.BytesIO(file_bytes))
-        for page in reader.pages:
-            page_texts.append(page.extract_text() or "")
-    else:
-        raise RuntimeError("No suitable open-source PDF parsing engine available (install pypdf or PyMuPDF).")
+    try:
+        if HAS_PYMUPDF:
+            doc = fitz.open(stream=file_bytes, filetype="pdf")
+            for page_num in range(len(doc)):
+                page_texts.append(doc.load_page(page_num).get_text("text"))
+            doc.close()
+        elif HAS_PYPDF:
+            reader = pypdf.PdfReader(io.BytesIO(file_bytes))
+            for page in reader.pages:
+                page_texts.append(page.extract_text() or "")
+        else:
+            raise RuntimeError("No suitable open-source PDF parsing engine available (install pypdf or PyMuPDF).")
+    except Exception as exc:
+        raise ValueError(f"Corrupted or unsupported draft roll PDF format: {str(exc)}")
 
     for page_num, text in enumerate(page_texts):
         assembly_constituency = "Constituency 1"
