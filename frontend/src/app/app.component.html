@@ -113,6 +113,61 @@
         </div>
       </div>
 
+      <!-- Tool 2.5: Historical Electoral Roll Guide -->
+      <div class="bg-slate-900/60 backdrop-blur border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+        <div>
+          <h3 class="text-sm font-bold text-teal-400 uppercase tracking-wide">📜 HISTORICAL ELECTORAL ROLL GUIDE</h3>
+          <p class="text-xs text-slate-400 mt-1">Instructions & physical office locations to retrieve official certified legacy extracts for SIR mapping.</p>
+        </div>
+
+        <div class="space-y-3 text-xs leading-relaxed">
+          <!-- Mumbai Legacy Data -->
+          <div class="bg-slate-950/80 border border-slate-800/80 p-4 rounded-xl space-y-2">
+            <h4 class="font-bold text-white flex items-center space-x-2 text-[12px]">
+              <span>🏙️ Mumbai Metropolitan Area (MCGM / BMC)</span>
+            </h4>
+            <div class="text-slate-300 space-y-1 text-[11px]">
+              <p>
+                <strong class="text-teal-400">Online PDFs:</strong> Download digitized archived roll PDFs from 
+                <a href="https://electiondata.mcgm.gov.in/" target="_blank" class="text-teal-400 hover:underline font-semibold font-mono">https://electiondata.mcgm.gov.in/ ➔</a>
+              </p>
+              <p>
+                <strong class="text-teal-400">Physical Office for Certified Extract:</strong> Visit 
+                <span class="text-white font-medium">Assessor & Collector (Election), 4th Floor, J.B. Shah Market Building, Yusuf Meher Ali Road, Near Masjid Bunder Station, Mumbai – 400009</span>.
+              </p>
+            </div>
+          </div>
+
+          <!-- Rest of Maharashtra -->
+          <div class="bg-slate-950/80 border border-slate-800/80 p-4 rounded-xl space-y-2">
+            <h4 class="font-bold text-white flex items-center space-x-2 text-[12px]">
+              <span>🚩 Rest of Maharashtra State</span>
+            </h4>
+            <div class="text-slate-300 space-y-1 text-[11px]">
+              <p>
+                <strong class="text-teal-400">Online Portal:</strong> Access official electoral portals at 
+                <a href="https://ceoelection.maharashtra.gov.in/" target="_blank" class="text-teal-400 hover:underline font-semibold font-mono">https://ceoelection.maharashtra.gov.in/ ➔</a>
+              </p>
+              <p>
+                <strong class="text-teal-400">Physical Office:</strong> Visit your local 
+                <span class="text-white font-medium">District Collectorate (Election Branch)</span> or the 
+                <span class="text-white font-medium">Tehsildar Office (Electoral Registration Branch)</span> in your home taluka.
+              </p>
+            </div>
+          </div>
+
+          <!-- Pre-2002 Deceased Exception Alert -->
+          <div class="bg-amber-950/30 border border-amber-900/60 p-4 rounded-xl space-y-1.5 text-amber-300">
+            <div class="flex items-center space-x-1.5 font-bold text-[11px] text-amber-400">
+              <span>⚠️ PRE-2002 DECEASED ELECTOR EXCEPTION ALERT</span>
+            </div>
+            <p class="text-[11px] leading-relaxed text-slate-300">
+              If an ancestor or family member died prior to the 2002 Special Intensive Revision drive (e.g. in 1997), citizens must obtain a <strong class="text-amber-300">1995 or 1997 Certified Electoral Extract</strong> from the Collectorate/Tehsildar combined with the official <strong class="text-amber-300">Death Certificate</strong> to legally prove and map their legacy under ECI guidelines.
+            </p>
+          </div>
+        </div>
+      </div>
+
       <!-- Tool 3: English-to-Marathi Phonetic Transliterator -->
       <div class="bg-slate-900/60 backdrop-blur border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
         <div>
@@ -367,6 +422,11 @@
           <app-blo-map></app-blo-map>
         </section>
       </div>
+
+      <!-- Project D: Legacy Anomaly & Household Bundle Wizard -->
+      <section class="space-y-2 pt-4">
+        <app-anomaly-wizard></app-anomaly-wizard>
+      </section>
 
     </div>
 

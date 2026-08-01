@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FormWizardComponent } from './components/form-wizard/form-wizard.component';
 import { BloMapComponent } from './components/blo-map/blo-map.component';
+import { AnomalyWizardComponent } from './components/anomaly-wizard/anomaly-wizard.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, FormsModule, FormWizardComponent, BloMapComponent],
+  imports: [CommonModule, FormsModule, FormWizardComponent, BloMapComponent, AnomalyWizardComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

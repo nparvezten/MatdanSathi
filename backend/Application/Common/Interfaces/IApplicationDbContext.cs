@@ -12,6 +12,7 @@ public interface IApplicationDbContext
     DbSet<BloCoordinateMap> BloCoordinateMaps { get; }
     DbSet<VisitSlip> VisitSlips { get; }
     DbSet<UserVerifier> UserVerifiers { get; }
+    DbSet<LegacyAnomalyRecord> LegacyAnomalyRecords { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

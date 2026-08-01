@@ -25,70 +25,54 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<BloCoordinateMap> BloCoordinateMaps => Set<BloCoordinateMap>();
     public DbSet<VisitSlip> VisitSlips => Set<VisitSlip>();
     public DbSet<UserVerifier> UserVerifiers => Set<UserVerifier>();
+    public DbSet<LegacyAnomalyRecord> LegacyAnomalyRecords => Set<LegacyAnomalyRecord>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-        // --- VoterProfile Configuration ---
         modelBuilder.Entity<VoterProfile>(entity =>
         {
             entity.HasKey(e => e.Id);
-
-            // Deterministic Blind Index for exact match must be indexed
-            entity.HasIndex(e => e.EpicNumberBlindIndex)
-                .IsUnique();
-
-            // Setup soft-delete query filter
+            entity.HasIndex(e => e.EpicNumberBlindIndex).IsUnique();
             entity.HasQueryFilter(e => !e.IsDeleted);
-
-            // Optimistic concurrency control using RowVersion
-            entity.Property(e => e.RowVersion)
-                .IsConcurrencyToken();
+            entity.Property(e => e.RowVersion).IsConcurrencyToken();
         });
 
-        // --- VerificationLog Configuration ---
         modelBuilder.Entity<VerificationLog>(entity =>
         {
             entity.HasKey(e => e.Id);
-
             entity.HasQueryFilter(e => !e.IsDeleted);
-
-            entity.Property(e => e.RowVersion)
-                .IsConcurrencyToken();
-
-            entity.HasOne(e => e.VoterProfile)
-                .WithMany()
-                .HasForeignKey(e => e.VoterProfileId)
-                .OnDelete(DeleteBehavior.Restrict);
+            entity.Property(e => e.RowVersion).IsConcurrencyToken();
+            entity.HasOne(e => e.VoterProfile).WithMany().HasForeignKey(e => e.VoterProfileId).OnDelete(DeleteBehavior.Restrict);
         });
 
-        // --- BloCoordinateMap Configuration ---
         modelBuilder.Entity<BloCoordinateMap>(entity =>
         {
             entity.HasKey(e => e.Id);
-
             entity.HasQueryFilter(e => !e.IsDeleted);
-
-            entity.Property(e => e.RowVersion)
-                .IsConcurrencyToken();
+            entity.Property(e => e.RowVersion).IsConcurrencyToken();
         });
 
-        // --- VisitSlip Configuration ---
         modelBuilder.Entity<VisitSlip>(entity =>
         {
             entity.HasKey(e => e.Id);
-
             entity.HasQueryFilter(e => !e.IsDeleted);
+            entity.Property(e => e.RowVersion).IsConcurrencyToken();
+        });
 
-            entity.Property(e => e.RowVersion)
-                .IsConcurrencyToken();
+        modelBuilder.Entity<LegacyAnomalyRecord>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.DeceasedNameBlindIndex);
+            entity.HasQueryFilter(e => !e.IsDeleted);
+            entity.Property(e => e.RowVersion).IsConcurrencyToken();
         });
     }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        // 1. Process unmapped cleartext properties for VoterProfiles (encryption + blind indexing)
+        // 1. Process unmapped cleartext properties for VoterProfiles
         foreach (var entry in ChangeTracker.Entries<VoterProfile>())
         {
             if (entry.State == EntityState.Added || entry.State == EntityState.Modified)
@@ -113,7 +97,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
             }
         }
 
-        // 1b. Process unmapped cleartext properties for VisitSlips (encryption + blind indexing)
+        // 1b. Process unmapped cleartext properties for VisitSlips
         foreach (var entry in ChangeTracker.Entries<VisitSlip>())
         {
             if (entry.State == EntityState.Added || entry.State == EntityState.Modified)
@@ -134,6 +118,27 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
                 if (!string.IsNullOrEmpty(entry.Entity.BloContact))
                 {
                     entry.Entity.BloContactEncrypted = _cryptographyService.Encrypt(entry.Entity.BloContact.Trim());
+                }
+            }
+        }
+
+        // 1c. Process unmapped cleartext properties for LegacyAnomalyRecord
+        foreach (var entry in ChangeTracker.Entries<LegacyAnomalyRecord>())
+        {
+            if (entry.State == EntityState.Added || entry.State == EntityState.Modified)
+            {
+                if (!string.IsNullOrEmpty(entry.Entity.DeceasedName))
+                {
+                    entry.Entity.DeceasedNameBlindIndex = _cryptographyService.GenerateBlindIndex(entry.Entity.DeceasedName.Trim().ToUpperInvariant());
+                    entry.Entity.DeceasedNameEncrypted = _cryptographyService.Encrypt(entry.Entity.DeceasedName.Trim());
+                }
+                if (!string.IsNullOrEmpty(entry.Entity.DeathCertRegNo))
+                {
+                    entry.Entity.DeathCertRegNoEncrypted = _cryptographyService.Encrypt(entry.Entity.DeathCertRegNo.Trim());
+                }
+                if (!string.IsNullOrEmpty(entry.Entity.FamilyBundleJson))
+                {
+                    entry.Entity.FamilyBundleJsonEncrypted = _cryptographyService.Encrypt(entry.Entity.FamilyBundleJson.Trim());
                 }
             }
         }
