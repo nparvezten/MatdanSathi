@@ -10,8 +10,9 @@
 - **Frontend (Angular 17 Standalone Components)**:
   - `AnomalyWizardComponent` (`app-anomaly-wizard`): Dynamic Reactive Form & Signals component for logging legacy extracts and dynamic family household bundles.
   - `Historical Electoral Roll Guide` (`app.component.html`): Features prominent pre-2002 deceased elector exception alert banner, online PDF links (`https://electiondata.mcgm.gov.in/`), CEO Maharashtra portal (`https://ceoelection.maharashtra.gov.in/`), and physical directions to the BMC Election Head Office (Masjid Bunder) & District Collectorates/Tehsildars.
+  - Tailwind CSS Path Fix: `tailwind.config.js` content array updated to scan `./frontend/src/**/*.{html,ts}` and `../frontend/src/**/*.{html,ts}` ensuring 100% styled glassmorphism dark-mode output (26.34 kB CSS output).
   - Preserved Public Utilities: Legacy EPIC Card Decoder, Delimitation Time Machine, English-to-Marathi Phonetic Transliterator, Join Voter Drive form, and ECI official portals.
-  - GitHub Pages Deployment: Configured and published to `https://nparvezten.github.io/MatdarSathi/`.
+  - GitHub Pages Live Deployment: Angular 17 browser directory `dist/frontend/browser` deployed with `--base-href=/MatdarSathi/` and SPA `404.html` routing fallback at **`https://nparvezten.github.io/MatdarSathi/`**.
 - **Python FastAPI Service**: PDF extraction microservice running on port 8000 using PyMuPDF (fitz) and pypdf.
 
 ## 2. Context & Security
@@ -19,12 +20,13 @@
 - **Deterministic Blind Indexing**: Uses HMAC-SHA256 blind indexes (`DeceasedNameBlindIndex`) to allow exact-match database queries without cleartext exposure.
 - **CORS & API Versioning**: All controllers annotated with `[ApiVersion("1.0")]` and `[Route("api/v{version:apiVersion}/[controller]")]`. Global CORS policy configured via `builder.Services.AddCors(...)` before authentication middleware.
 - **Local Dev Database Fallback**: EF Core automatically falls back to SQLite (`matdarsathi_dev.db`) if PostgreSQL is unconfigured or offline.
+- **Deployment Script**: Integrated `npm --prefix frontend run deploy` command targeting `frontend/dist/frontend/browser` to publish clean gh-pages builds.
 
 ## 3. Blockers / Deferred
 - **Offline Sync Queue**: Volunteer registrations and anomaly records save locally (`localStorage`) during backend offline states; background sync mechanism can be expanded for full service worker caching.
 - **Multi-region Roll Archives**: Direct PDF scraping for non-MCGM municipalities deferred to future sub-microservice iteration.
 
 ## 4. Next Steps
-1. **Verify Live GitHub Pages Site**: Confirm `https://nparvezten.github.io/MatdarSathi/` renders correctly and all client-side tools (Epic Decoder, Time Machine, Transliterator) function in web browser sandbox.
+1. **Verify Live GitHub Pages Site**: Confirm **`https://nparvezten.github.io/MatdarSathi/`** renders styled dark-mode UI with full glassmorphism cards and working client-side utilities.
 2. **Expand E2E Playwright Tests**: Write Playwright E2E browser automation scripts verifying end-to-end volunteer registration, Super Admin approval, and anomaly submission flows.
 3. **PWA Offline Caching & Service Worker**: Enhance `ngsw-config.json` for offline asset caching across Capacitor mobile iOS/Android webviews.
