@@ -49,4 +49,30 @@ public class IngestionController : ControllerBase
         var result = await _mediator.Send(command);
         return Ok(result);
     }
+
+    /// <summary>
+    /// Retrieve booth assignment status list for volunteer task claiming.
+    /// </summary>
+    [HttpGet("booths")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetBooths([FromQuery] string? assembly)
+    {
+        var query = new MatdarSathi.API.Application.Ingestion.Queries.GetBoothAssignments.GetBoothAssignmentsQuery(assembly);
+        var result = await _mediator.Send(query, HttpContext.RequestAborted);
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Claim a booth assignment to prevent duplicate ingestion uploads.
+    /// </summary>
+    [HttpPost("booths/{boothId}/claim")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> ClaimBooth([FromRoute] string boothId)
+    {
+        var volunteerId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.Identity?.Name ?? "volunteer-anon";
+        var command = new MatdarSathi.API.Application.Ingestion.Commands.ClaimBooth.ClaimBoothCommand(boothId, volunteerId);
+        var result = await _mediator.Send(command, HttpContext.RequestAborted);
+        return Ok(result);
+    }
 }

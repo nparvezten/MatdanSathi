@@ -29,6 +29,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<RollIngestionBatch> RollIngestionBatches => Set<RollIngestionBatch>();
     public DbSet<ObjectionCase> ObjectionCases => Set<ObjectionCase>();
     public DbSet<DistrictEscalationContact> DistrictEscalationContacts => Set<DistrictEscalationContact>();
+    public DbSet<VolunteerBoothAssignment> VolunteerBoothAssignments => Set<VolunteerBoothAssignment>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

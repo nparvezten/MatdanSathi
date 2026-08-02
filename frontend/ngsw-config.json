@@ -16,9 +16,8 @@
       }
     },
     {
-      "name": "assets",
-      "installMode": "lazy",
-      "updateMode": "prefetch",
+      "name": "public-utilities-offline-assets",
+      "installMode": "prefetch",
       "resources": {
         "files": [
           "/assets/**",
@@ -26,5 +25,13 @@
         ]
       }
     }
+  ],
+  "dataGroups": [],
+  "navigationUrls": [
+    "/**",
+    "!/api/v1/voters/check",
+    "!/api/v1/ingestion/**",
+    "!/api/v1/objections/**",
+    "!/api/v1/anomalies/**"
   ]
 }

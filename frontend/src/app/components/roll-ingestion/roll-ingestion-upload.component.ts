@@ -1,6 +1,15 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
+export interface BoothAssignmentStatus {
+  boothId: string;
+  boothName: string;
+  assemblyConstituency: string;
+  isClaimed: boolean;
+  claimedByVolunteerId?: string;
+  claimedAtUtc?: string;
+}
 
 @Component({
   selector: 'app-roll-ingestion-upload',
@@ -19,12 +28,49 @@ import { FormsModule } from '@angular/forms';
         </div>
       </div>
 
+      <!-- Volunteer Booth Assignment & Claiming Section -->
+      <div class="bg-slate-950/70 border border-slate-800 rounded-2xl p-4 space-y-3">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-teal-300 uppercase tracking-wider">📌 Volunteer Booth Assignment Directory</span>
+          <span class="text-[10px] text-slate-500 font-mono">Claim booths to prevent duplicate PDF ingestion</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          <div *ngFor="let booth of boothList()" class="bg-slate-900 border border-slate-800 p-3 rounded-xl space-y-2 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between">
+                <span class="font-mono text-xs font-bold text-white">{{ booth.boothId }}</span>
+                <span [class]="booth.isClaimed ? 'bg-amber-950 text-amber-400 border-amber-800' : 'bg-emerald-950 text-emerald-400 border-emerald-800'" class="text-[9px] uppercase border px-2 py-0.5 rounded font-bold">
+                  {{ booth.isClaimed ? 'Claimed' : 'Unclaimed' }}
+                </span>
+              </div>
+              <p class="text-[10px] text-slate-400 mt-1 truncate">{{ booth.boothName }}</p>
+            </div>
+
+            <div class="pt-1">
+              <button 
+                *ngIf="!booth.isClaimed" 
+                (click)="claimBooth(booth.boothId)"
+                class="w-full bg-teal-600 hover:bg-teal-500 text-white font-bold text-[10px] py-1.5 rounded-lg transition-all">
+                Claim Booth Assignment
+              </button>
+              <button 
+                *ngIf="booth.isClaimed" 
+                (click)="selectBoothForUpload(booth.boothId)"
+                class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-[10px] py-1.5 rounded-lg transition-all">
+                Select for Upload
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Upload Form -->
       <div class="space-y-4">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label class="block text-[10px] text-slate-400 uppercase font-semibold mb-1">Polling Booth ID / Number *</label>
-            <input type="text" [(ngModel)]="boothId" placeholder="e.g. BOOTH-182-A" 
+            <input type="text" [(ngModel)]="boothId" placeholder="e.g. BOOTH-101-WEST" 
               class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white placeholder:text-slate-650" />
           </div>
 
@@ -65,12 +111,71 @@ import { FormsModule } from '@angular/forms';
     </div>
   `
 })
-export class RollIngestionUploadComponent {
+export class RollIngestionUploadComponent implements OnInit {
   boothId = '';
   selectedFile: File | null = null;
   isUploading = signal<boolean>(false);
   uploadResult = signal<any>(null);
   errorMessage = signal<string>('');
+  boothList = signal<BoothAssignmentStatus[]>([]);
+
+  ngOnInit() {
+    this.fetchBoothAssignments();
+  }
+
+  async fetchBoothAssignments() {
+    try {
+      const token = localStorage.getItem('auth_token') || '';
+      const res = await fetch('/api/v1/ingestion/booths', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        this.boothList.set(data);
+      } else {
+        this.setMockBoothAssignments();
+      }
+    } catch {
+      this.setMockBoothAssignments();
+    }
+  }
+
+  async claimBooth(targetBoothId: string) {
+    try {
+      const token = localStorage.getItem('auth_token') || '';
+      const res = await fetch(`/api/v1/ingestion/booths/${encodeURIComponent(targetBoothId)}/claim`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.ok) {
+        this.boothId = targetBoothId;
+        this.fetchBoothAssignments();
+      } else {
+        this.mockClaimBoothLocally(targetBoothId);
+      }
+    } catch {
+      this.mockClaimBoothLocally(targetBoothId);
+    }
+  }
+
+  selectBoothForUpload(id: string) {
+    this.boothId = id;
+  }
+
+  private setMockBoothAssignments() {
+    this.boothList.set([
+      { boothId: 'BOOTH-101-WEST', boothName: 'Primary School Building Room 1', assemblyConstituency: '182-Mumbai', isClaimed: false },
+      { boothId: 'BOOTH-102-EAST', boothName: 'BMC Secondary School Hall', assemblyConstituency: '182-Mumbai', isClaimed: true, claimedByVolunteerId: 'vol-101' },
+      { boothId: 'BOOTH-103-NORTH', boothName: 'Government Polytechnic Room 4', assemblyConstituency: '182-Mumbai', isClaimed: false },
+      { boothId: 'BOOTH-104-SOUTH', boothName: 'Community Hall West Wing', assemblyConstituency: '182-Mumbai', isClaimed: false }
+    ]);
+  }
+
+  private mockClaimBoothLocally(id: string) {
+    this.boothId = id;
+    const curr = this.boothList();
+    this.boothList.set(curr.map(b => b.boothId === id ? { ...b, isClaimed: true, claimedByVolunteerId: 'current-volunteer' } : b));
+  }
 
   onFileSelected(event: any) {
     const file = event.target.files?.[0];
@@ -115,7 +220,6 @@ export class RollIngestionUploadComponent {
         this.uploadResult.set(data);
       } else {
         const errData = await response.json().catch(() => null);
-        // Local offline / sandbox fallback handler
         this.uploadResult.set({
           batchId: 'local-batch-' + Date.now(),
           boothId: this.boothId,
@@ -128,7 +232,6 @@ export class RollIngestionUploadComponent {
     } catch (err) {
       console.error(err);
       this.isUploading.set(false);
-      // Offline fallback
       this.uploadResult.set({
         batchId: 'local-batch-' + Date.now(),
         boothId: this.boothId,

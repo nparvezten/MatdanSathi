@@ -16,6 +16,7 @@ public interface IApplicationDbContext
     DbSet<RollIngestionBatch> RollIngestionBatches { get; }
     DbSet<ObjectionCase> ObjectionCases { get; }
     DbSet<DistrictEscalationContact> DistrictEscalationContacts { get; }
+    DbSet<VolunteerBoothAssignment> VolunteerBoothAssignments { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }
