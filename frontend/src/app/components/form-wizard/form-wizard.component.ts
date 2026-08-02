@@ -1,11 +1,12 @@
 import { Component, signal, computed, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ObjectionTrackerComponent } from '../objection-tracker/objection-tracker.component';
 
 @Component({
   selector: 'app-form-wizard',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ObjectionTrackerComponent],
   template: `
     <div class="w-full max-w-2xl mx-auto bg-slate-900/60 backdrop-blur-md border border-slate-800 rounded-2xl shadow-xl overflow-hidden">
       <!-- Wizard Title Header -->
@@ -260,6 +261,11 @@ import { FormsModule } from '@angular/forms';
                 <button (click)="printSummary()" class="bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs px-4 py-2 rounded-lg transition-all flex items-center space-x-1.5">
                   <span>🖨 Print AERO Hearing Dossier</span>
                 </button>
+              </div>
+
+              <!-- Objection & Status Tracker Card Injection -->
+              <div class="pt-3 print:hidden">
+                <app-objection-tracker [epicNumber]="epicInput"></app-objection-tracker>
               </div>
             </div>
           </div>

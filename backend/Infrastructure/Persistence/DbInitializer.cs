@@ -194,5 +194,56 @@ public static class DbInitializer
             context.UserVerifiers.AddRange(users);
             context.SaveChanges();
         }
+
+        // 5. Seed District Escalation Contact Directory (Public official ERO/DEO reference data)
+        if (!context.DistrictEscalationContacts.Any())
+        {
+            var contacts = new[]
+            {
+                new DistrictEscalationContact
+                {
+                    District = "Mumbai City",
+                    EroNameOffice = "ERO Office 182-Mumbai City, Old Custom House, Fort",
+                    DeoOfficeAddress = "District Election Office, Collectorate, Old Custom House Yard, Fort, Mumbai - 400001",
+                    HelplineNumber = "1950 / 022-22661234",
+                    OfficialPortalUrl = "https://mumbaicity.gov.in/"
+                },
+                new DistrictEscalationContact
+                {
+                    District = "Mumbai Suburban",
+                    EroNameOffice = "ERO Office Bandra / Kurla / Malad, Administrative Bldg",
+                    DeoOfficeAddress = "District Collectorate, 10th Floor, Govt Colony, Bandra East, Mumbai - 400051",
+                    HelplineNumber = "1950 / 022-26556800",
+                    OfficialPortalUrl = "https://mumbaisuburban.gov.in/"
+                },
+                new DistrictEscalationContact
+                {
+                    District = "Thane",
+                    EroNameOffice = "ERO Electoral Registration Office Thane, Court Naka",
+                    DeoOfficeAddress = "District Collectorate, Court Naka, Thane West, Thane - 400601",
+                    HelplineNumber = "1950 / 022-25344041",
+                    OfficialPortalUrl = "https://thane.gov.in/"
+                },
+                new DistrictEscalationContact
+                {
+                    District = "Pune",
+                    EroNameOffice = "ERO Office Pune City & Haveli, Council Hall",
+                    DeoOfficeAddress = "District Collectorate, Council Hall Compound, Pune - 411001",
+                    HelplineNumber = "1950 / 020-26123300",
+                    OfficialPortalUrl = "https://pune.gov.in/"
+                },
+                new DistrictEscalationContact
+                {
+                    District = "Nagpur",
+                    EroNameOffice = "ERO Office Nagpur Central, Civil Lines",
+                    DeoOfficeAddress = "District Collectorate Office, Civil Lines, Nagpur - 440001",
+                    HelplineNumber = "1950 / 0712-2560500",
+                    OfficialPortalUrl = "https://nagpur.gov.in/"
+                }
+            };
+
+            context.DistrictEscalationContacts.AddRange(contacts);
+            context.SaveChanges();
+        }
     }
 }

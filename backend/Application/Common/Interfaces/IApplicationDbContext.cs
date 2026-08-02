@@ -14,6 +14,8 @@ public interface IApplicationDbContext
     DbSet<UserVerifier> UserVerifiers { get; }
     DbSet<LegacyAnomalyRecord> LegacyAnomalyRecords { get; }
     DbSet<RollIngestionBatch> RollIngestionBatches { get; }
+    DbSet<ObjectionCase> ObjectionCases { get; }
+    DbSet<DistrictEscalationContact> DistrictEscalationContacts { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

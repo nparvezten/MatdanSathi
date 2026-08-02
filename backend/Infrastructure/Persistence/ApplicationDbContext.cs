@@ -27,6 +27,8 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<UserVerifier> UserVerifiers => Set<UserVerifier>();
     public DbSet<LegacyAnomalyRecord> LegacyAnomalyRecords => Set<LegacyAnomalyRecord>();
     public DbSet<RollIngestionBatch> RollIngestionBatches => Set<RollIngestionBatch>();
+    public DbSet<ObjectionCase> ObjectionCases => Set<ObjectionCase>();
+    public DbSet<DistrictEscalationContact> DistrictEscalationContacts => Set<DistrictEscalationContact>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -73,6 +75,24 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
         {
             entity.HasKey(e => e.Id);
             entity.HasIndex(e => e.DeceasedNameBlindIndex);
+            entity.HasQueryFilter(e => !e.IsDeleted);
+            entity.Property(e => e.RowVersion).IsConcurrencyToken();
+        });
+
+        modelBuilder.Entity<ObjectionCase>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasQueryFilter(e => !e.IsDeleted);
+            entity.Property(e => e.RowVersion).IsConcurrencyToken();
+            entity.HasOne(e => e.LinkedVoterProfile)
+                  .WithMany()
+                  .HasForeignKey(e => e.LinkedVoterProfileId)
+                  .OnDelete(DeleteBehavior.SetNull);
+        });
+
+        modelBuilder.Entity<DistrictEscalationContact>(entity =>
+        {
+            entity.HasKey(e => e.Id);
             entity.HasQueryFilter(e => !e.IsDeleted);
             entity.Property(e => e.RowVersion).IsConcurrencyToken();
         });
@@ -147,6 +167,27 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
                 if (!string.IsNullOrEmpty(entry.Entity.FamilyBundleJson))
                 {
                     entry.Entity.FamilyBundleJsonEncrypted = _cryptographyService.Encrypt(entry.Entity.FamilyBundleJson.Trim());
+                }
+            }
+        }
+
+        // 1d. Process unmapped cleartext properties for ObjectionCase
+        foreach (var entry in ChangeTracker.Entries<ObjectionCase>())
+        {
+            if (entry.State == EntityState.Added || entry.State == EntityState.Modified)
+            {
+                if (!string.IsNullOrEmpty(entry.Entity.EroNotes))
+                {
+                    entry.Entity.EroNotesEncrypted = _cryptographyService.Encrypt(entry.Entity.EroNotes.Trim());
+                }
+                if (!string.IsNullOrEmpty(entry.Entity.ApplicantName))
+                {
+                    entry.Entity.ApplicantNameEncrypted = _cryptographyService.Encrypt(entry.Entity.ApplicantName.Trim());
+                }
+                if (!string.IsNullOrEmpty(entry.Entity.EpicNumber))
+                {
+                    entry.Entity.EpicNumberBlindIndex = _cryptographyService.GenerateBlindIndex(entry.Entity.EpicNumber.Trim().ToUpperInvariant());
+                    entry.Entity.EpicNumberEncrypted = _cryptographyService.Encrypt(entry.Entity.EpicNumber.Trim().ToUpperInvariant());
                 }
             }
         }
