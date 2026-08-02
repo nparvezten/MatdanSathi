@@ -34,6 +34,13 @@
           class="px-4 py-2 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white flex items-center space-x-1.5">
           <span>🔒 Volunteer Portal</span>
         </button>
+        <button 
+          (click)="setTab('transparency')"
+          [class.bg-teal-600]="activeTab() === 'transparency'"
+          [class.text-white]="activeTab() === 'transparency'"
+          class="px-4 py-2 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white flex items-center space-x-1.5">
+          <span>📊 EC Advocacy Transparency</span>
+        </button>
       </div>
 
       <!-- User Auth State -->
@@ -431,5 +438,10 @@
 
     </div>
 
+  </div>
+
+  <!-- TAB 3: EC ADVOCACY TRANSPARENCY DASHBOARD (Public Reference Dataset) -->
+  <div *ngIf="activeTab() === 'transparency'" class="max-w-6xl w-full mx-auto px-4 mt-8 animate-fadeIn">
+    <app-transparency-dashboard></app-transparency-dashboard>
   </div>
 </div>

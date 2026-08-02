@@ -5,17 +5,18 @@ import { FormWizardComponent } from './components/form-wizard/form-wizard.compon
 import { BloMapComponent } from './components/blo-map/blo-map.component';
 import { AnomalyWizardComponent } from './components/anomaly-wizard/anomaly-wizard.component';
 import { RollIngestionUploadComponent } from './components/roll-ingestion/roll-ingestion-upload.component';
+import { TransparencyDashboardComponent } from './pages/transparency-dashboard/transparency-dashboard.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, FormsModule, FormWizardComponent, BloMapComponent, AnomalyWizardComponent, RollIngestionUploadComponent],
+  imports: [CommonModule, FormsModule, FormWizardComponent, BloMapComponent, AnomalyWizardComponent, RollIngestionUploadComponent, TransparencyDashboardComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
   title = 'MatdarSathi (मतदार साथी) Dashboard';
-  activeTab = signal<'public' | 'volunteer'>('public');
+  activeTab = signal<'public' | 'volunteer' | 'transparency'>('public');
   isAuthenticated = signal<boolean>(false);
   email = '';
   password = '';
@@ -60,7 +61,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-  setTab(tab: 'public' | 'volunteer') {
+  setTab(tab: 'public' | 'volunteer' | 'transparency') {
     this.activeTab.set(tab);
   }
 
