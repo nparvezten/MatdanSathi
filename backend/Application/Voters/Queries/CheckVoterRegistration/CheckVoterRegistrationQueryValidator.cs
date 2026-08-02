@@ -1,4 +1,5 @@
 using FluentValidation;
+using MatdarSathi.API.Application.Common.Constants;
 
 namespace MatdarSathi.API.Application.Voters.Queries.CheckVoterRegistration;
 
@@ -10,7 +11,7 @@ public class CheckVoterRegistrationQueryValidator : AbstractValidator<CheckVoter
             .NotEmpty().WithMessage("EPIC number is required.")
             .MinimumLength(5).WithMessage("EPIC number is too short.")
             .MaximumLength(20).WithMessage("EPIC number must not exceed 20 characters.")
-            .Matches(@"^[A-Z0-9/\-]+$").WithMessage("EPIC number must contain only alphanumeric characters, slashes, or hyphens.");
+            .Matches(EpicRegexConstants.EpicPattern).WithMessage("EPIC number must contain only alphanumeric characters, slashes, or hyphens.");
 
         RuleFor(x => x.VerifierId)
             .NotEmpty().WithMessage("Verifier ID is required.");

@@ -49,6 +49,11 @@ public static class DependencyInjection
         services.AddScoped<IWatchdogComparisonService, MatdarSathi.API.Infrastructure.Services.WatchdogComparisonService>();
         services.AddHostedService<MatdarSathi.API.Infrastructure.Services.RollIngestionBackgroundService>();
 
+        // 6. Register Messaging Channel Adapter Services (WhatsApp / SMS / Notification)
+        services.Configure<MatdarSathi.API.Infrastructure.Messaging.MessagingSettings>(
+            configuration.GetSection(MatdarSathi.API.Infrastructure.Messaging.MessagingSettings.SectionName));
+        services.AddScoped<MatdarSathi.API.Infrastructure.Messaging.IMessagingChannel, MatdarSathi.API.Infrastructure.Messaging.TwilioMessagingChannel>();
+
         return services;
     }
 }
